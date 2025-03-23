@@ -1,9 +1,3 @@
-<!--
- * @file error.vue
- * @description 全局错误处理页面组件
- * @remarks 用于展示404页面未找到和其他系统错误信息
- -->
-
 <template>
   <main
     class="min-h-screen flex items-center justify-center"

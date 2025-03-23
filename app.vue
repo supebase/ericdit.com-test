@@ -1,9 +1,3 @@
-<!--
- * @file App.vue
- * @description 应用程序根组件，负责用户认证状态管理和活动状态追踪
- * @author Eric
- -->
-
 <template>
   <NuxtLayout>
     <NuxtPage />
