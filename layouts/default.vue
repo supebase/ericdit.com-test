@@ -8,16 +8,18 @@
           首页
         </NuxtLink>
         <div>
-          <UChip
-            inset
-            size="3xl"
-            :text="bookmarksCount">
-            <NuxtLink to="/bookmarks">
-              <UIcon
-                name="hugeicons:all-bookmark"
-                class="size-6" />
-            </NuxtLink>
-          </UChip>
+          <div v-if="isAuthenticated">
+            <UChip
+              inset
+              size="3xl"
+              :text="bookmarksCount">
+              <NuxtLink to="/bookmarks">
+                <UIcon
+                  name="hugeicons:all-bookmark"
+                  class="size-6" />
+              </NuxtLink>
+            </UChip>
+          </div>
 
           <AuthStatus />
         </div>

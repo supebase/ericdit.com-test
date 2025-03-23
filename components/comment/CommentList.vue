@@ -5,7 +5,9 @@
       <span class="text-gray-500 ml-2 text-base">{{ totalComments }}</span>
     </h3>
 
-    <div class="comment-input mb-6">
+    <div
+      class="comment-input mb-6"
+      v-if="allowComments">
       <textarea
         v-model="newComment"
         class="w-full p-3 border rounded-lg"
@@ -18,6 +20,12 @@
         class="mt-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed">
         {{ isSubmitting ? "提交中..." : "发表评论" }}
       </button>
+    </div>
+
+    <div
+      v-else
+      class="text-center text-gray-500 py-8">
+      评论已关闭
     </div>
 
     <div
@@ -60,6 +68,7 @@ interface ReplyData {
 
 const props = defineProps<{
   contentId: string;
+  allowComments: boolean;
 }>();
 
 const { getComments, createComment, subscribeComments } = useComments();

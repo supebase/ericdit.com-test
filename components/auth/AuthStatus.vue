@@ -3,12 +3,11 @@
     <template v-if="isAuthenticated">
       <div class="flex items-center gap-2">
         <span class="text-sm">{{ user?.first_name }}</span>
-        <button
-          @click="handleLogout"
-          class="text-sm text-gray-600 hover:text-gray-900"
-          :disabled="isLoading">
-          退出
-        </button>
+        <NuxtLink
+          to="/account"
+          class="text-sm text-gray-600 hover:text-gray-900">
+          账号
+        </NuxtLink>
       </div>
     </template>
     <template v-else>
@@ -22,21 +21,5 @@
 </template>
 
 <script setup lang="ts">
-const router = useRouter();
-const { user, isAuthenticated, logout } = useAuth();
-const isLoading = ref(false);
-
-const handleLogout = async () => {
-  if (isLoading.value) return;
-
-  try {
-    isLoading.value = true;
-    await logout();
-    router.push("/login");
-  } catch (error) {
-    console.error("Failed to logout:", error);
-  } finally {
-    isLoading.value = false;
-  }
-};
+const { user, isAuthenticated } = useAuth();
 </script>

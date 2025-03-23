@@ -15,6 +15,16 @@ export default defineNuxtConfig({
     keepalive: true,
   },
 
+  icon: {
+    serverBundle: {
+      collections: ["hugeicons", "svg-spinners"],
+      externalizeIconsJson: true,
+    },
+    clientBundle: {
+      scan: true,
+    },
+  },
+
   colorMode: {
     preference: "dark",
   },

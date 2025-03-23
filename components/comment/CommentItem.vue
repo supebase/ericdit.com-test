@@ -1,6 +1,12 @@
 <template>
   <div class="comment-item border-l-2 pl-4">
     <div class="comment-header flex items-center gap-2">
+      <UChip
+        inset
+        position="bottom-right"
+        :color="userStatus ? 'primary' : 'neutral'">
+        <UAvatar :src="useAssets(comment.user_created.avatar || '')" />
+      </UChip>
       <span class="font-medium">{{ comment.user_created.first_name }}</span>
       <time class="text-sm text-gray-500">{{ useDatetime(comment.date_created) }}</time>
       <CommonLikeButton :comment-id="comment.id" />
@@ -76,5 +82,22 @@ const replyCount = computed(() => replyListRef.value?.repliesCount || 0);
 defineExpose({
   refreshReplies,
   comment: props.comment,
+});
+
+const { checkUserStatus, subscribeUserStatus, cleanup } = useUserStatus();
+const userStatus = ref(false);
+
+onMounted(async () => {
+  userStatus.value = await checkUserStatus(props.comment.user_created.id);
+
+  if (import.meta.client) {
+    subscribeUserStatus(props.comment.user_created.id, (status) => {
+      userStatus.value = status;
+    });
+  }
+});
+
+onUnmounted(() => {
+  cleanup();
 });
 </script>

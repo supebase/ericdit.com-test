@@ -17,7 +17,8 @@
     <!-- 添加评论列表组件 -->
     <CommentList
       v-if="content"
-      :content-id="content.id" />
+      :content-id="content.id"
+      :allow-comments="content.allow_comments" />
   </div>
 </template>
 
@@ -25,7 +26,7 @@
 const route = useRoute();
 const { getContent } = useContents();
 
-const CONTENT_FIELDS = ["id", "title", "body", "date_created"] as const;
+const CONTENT_FIELDS = ["id", "title", "body", "allow_comments", "date_created"] as const;
 
 const {
   data: content,
