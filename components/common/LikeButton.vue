@@ -1,11 +1,13 @@
 <template>
-  <div class="like-button inline-flex items-center gap-1">
+  <div class="flex justify-end items-center w-1/4">
     <button
       @click="handleLike"
       :disabled="!isAuthenticated || isProcessing"
-      class="text-sm flex items-center gap-1 text-neutral-600 disabled:opacity-50 disabled:cursor-not-allowed"
-      :class="{ 'text-red-600': isLiked }">
-      <UIcon :name="isLiked ? 'hugeicons:heart-check' : 'hugeicons:favourite'" />
+      class="text-sm flex items-center space-x-2 text-neutral-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+      :class="{ 'text-primary-400': isLiked }">
+      <UIcon
+        :name="isLiked ? 'hugeicons:heart-check' : 'hugeicons:favourite'"
+        :size="iconSize" />
       <span>{{ likesCount }}</span>
     </button>
   </div>
@@ -15,6 +17,7 @@
 const props = defineProps<{
   commentId?: string;
   contentId?: string;
+  iconSize?: number;
 }>();
 
 const { isAuthenticated } = useAuth();

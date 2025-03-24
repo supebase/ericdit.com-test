@@ -1,24 +1,15 @@
 <template>
-  <div>
-    <header class="border-b border-b-neutral-600">
-      <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-        <NuxtLink
-          to="/"
-          class="text-xl font-bold">
-          首页
+  <div class="max-w-sm mx-auto">
+    <header class="sticky top-0 bg-neutral-900/80 backdrop-blur-sm z-50">
+      <div class="container mx-auto p-4 flex justify-between items-center">
+        <NuxtLink to="/">
+          <CommonLogo />
         </NuxtLink>
-        <div>
-          <div v-if="isAuthenticated">
-            <UChip
-              inset
-              size="3xl"
-              :text="bookmarksCount">
-              <NuxtLink to="/bookmarks">
-                <UIcon
-                  name="hugeicons:all-bookmark"
-                  class="size-6" />
-              </NuxtLink>
-            </UChip>
+        <div class="flex items-center gap-6">
+          <div
+            v-if="isAuthenticated"
+            class="mt-3">
+            <CommonBookmarkCounter />
           </div>
 
           <AuthStatus />
@@ -26,57 +17,18 @@
       </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8">
+    <main class="container mx-auto px-4">
       <slot />
     </main>
+
+    <footer class="container mx-auto p-4">
+      <div class="text-center text-sm text-neutral-600 uppercase">
+        &copy; 2001-{{ new Date().getFullYear() }} - Created by Eric
+      </div>
+    </footer>
   </div>
 </template>
 
 <script setup>
-const { getBookmarks, subscribeBookmarks } = useBookmarks();
-const { isAuthenticated, user } = useAuth();
-const bookmarksCount = ref(0);
-
-// 获取收藏数量
-const fetchBookmarksCount = async () => {
-  if (!isAuthenticated.value) {
-    bookmarksCount.value = 0;
-    return;
-  }
-
-  try {
-    const bookmarks = await getBookmarks({
-      filter: {
-        user_created: { _eq: user.value?.id },
-      },
-    });
-    bookmarksCount.value = bookmarks.length;
-  } catch (error) {
-    console.error("Failed to fetch bookmarks count:", error);
-  }
-};
-
-// 监听用户登录状态变化
-watch(isAuthenticated, () => {
-  fetchBookmarksCount();
-});
-
-onMounted(async () => {
-  // 初始获取收藏数量
-  await fetchBookmarksCount();
-
-  // 订阅收藏变化
-  subscribeBookmarks(
-    {
-      filter: {
-        user_created: { _eq: user.value?.id },
-      },
-    },
-    async (event) => {
-      if (["create", "delete"].includes(event.event)) {
-        await fetchBookmarksCount();
-      }
-    }
-  );
-});
+const { isAuthenticated } = useAuth();
 </script>

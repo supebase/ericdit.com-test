@@ -1,2 +1,91 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+
+:root {
+  --ui-radius: 0.5rem;
+  --animation-duration: 0.3s;
+  --animation-timing: ease;
+}
+
+.light {
+  --scrollbar-track: var(--color-neutral-100);
+  --scrollbar-thumb: var(--color-neutral-200);
+  --scrollbar-thumb-hover: var(--color-neutral-300);
+}
+
+.dark {
+  --scrollbar-track: var(--color-neutral-800);
+  --scrollbar-thumb: var(--color-neutral-700);
+  --scrollbar-thumb-hover: var(--color-neutral-900);
+}
+
+html {
+  overflow-y: scroll;
+  font-family: "Ubuntu";
+  scroll-behavior: smooth !important;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+.eric svg {
+  width: 40px;
+  height: auto;
+}
+
+@media (prefers-reduced-motion) {
+  .eric path {
+    animation: none !important;
+    stroke-dasharray: unset !important;
+  }
+}
+
+@keyframes write {
+  0% {
+    stroke-dashoffset: 1000px;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* 只在 .eric 类下的路径应用动画 */
+.eric path:nth-child(1) {
+  stroke-dasharray: 1000px;
+  stroke-dashoffset: 1000px;
+  animation: write 5s ease forwards;
+}
+
+.eric path:nth-child(2) {
+  stroke-dasharray: 1000px;
+  stroke-dashoffset: 1000px;
+  animation: write 5s ease forwards;
+  animation-delay: 1.5s;
+}
+
+.eric path:nth-child(3) {
+  stroke-dasharray: 1000px;
+  stroke-dashoffset: 1000px;
+  animation: write 5s ease forwards;
+  animation-delay: 2s;
+}

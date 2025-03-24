@@ -23,7 +23,16 @@
 <script setup lang="ts">
 const { getContents, subscribeContents } = useContents();
 
-const CONTENT_FIELDS = ["id", "title", "body", "date_created"] as const;
+const CONTENT_FIELDS = [
+  "id",
+  "title",
+  "body",
+  "content_type_id.*",
+  "images.*",
+  "allow_comments",
+  "user_created.*",
+  "date_created",
+] as const;
 
 const {
   data: contents,

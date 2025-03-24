@@ -1,6 +1,6 @@
 <template>
   <article class="py-3">
-    <h1 class="text-2xl font-bold mb-4">{{ content.title }}</h1>
+    <div class="text-2xl font-bold mb-4">{{ content.title }}</div>
     <div class="flex items-center space-x-4 text-sm text-gray-500 mb-6">
       <time :datetime="content.date_created">
         {{ useDatetime(content.date_created) }}
