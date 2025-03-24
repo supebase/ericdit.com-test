@@ -7,7 +7,7 @@
       <div v-if="content.images.length === 1">
         <img
           :src="useAssets(content.images[0].directus_files_id) || undefined"
-          class="rounded-lg w-full h-48 object-cover" />
+          class="rounded-lg aspect-[calc(4*3+1)/8] object-cover" />
       </div>
       <div
         class="line-clamp-3 text-neutral-400"
@@ -26,7 +26,7 @@
           }">
           <img
             :src="useAssets(item.directus_files_id) || undefined"
-            class="rounded-lg w-full h-48 object-cover" />
+            class="rounded-lg aspect-[calc(4*3+1)/8] object-cover" />
         </UCarousel>
       </div>
       <div class="flex items-center">

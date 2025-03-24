@@ -1,7 +1,7 @@
 <template>
   <div class="max-w-sm mx-auto">
-    <header class="sticky top-0 bg-neutral-900/80 backdrop-blur-sm z-50">
-      <div class="container mx-auto p-4 flex justify-between items-center">
+    <header class="sticky top-0 bg-neutral-900 z-50">
+      <div class="container mx-auto py-4 flex justify-between items-center">
         <NuxtLink to="/">
           <CommonLogo />
         </NuxtLink>
@@ -17,11 +17,11 @@
       </div>
     </header>
 
-    <main class="container mx-auto px-4">
+    <main class="container mx-auto">
       <slot />
     </main>
 
-    <footer class="container mx-auto p-4">
+    <footer class="container mx-auto py-4">
       <div class="text-center text-sm text-neutral-600 uppercase">
         &copy; 2001-{{ new Date().getFullYear() }} - Created by Eric
       </div>
