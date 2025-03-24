@@ -54,6 +54,26 @@ export const useAuth = () => {
   };
 
   /**
+   * 用户注册
+   * @param email - 用户邮箱
+   * @param password - 用户密码
+   * @param firstName - 用户名
+   * @throws Error 当注册失败时抛出错误
+   */
+  const register = async (email: string, password: string, firstName: string): Promise<void> => {
+    try {
+      await $authClient.request(
+        $user.registerUser(email, password, {
+          first_name: firstName,
+        })
+      );
+      await login(email, password);
+    } catch (error: any) {
+      throw new Error(error.errors?.[0]?.message || "注册失败");
+    }
+  };
+
+  /**
    * 刷新用户信息
    * 获取最新的用户数据并更新状态
    * @throws Error 当获取用户信息失败时抛出错误
@@ -73,6 +93,7 @@ export const useAuth = () => {
     isAuthenticated,
     login,
     logout,
+    register,
     refreshUser,
   };
 };

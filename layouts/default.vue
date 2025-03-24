@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-sm mx-auto">
+  <div class="flex flex-col min-h-screen max-w-md mx-auto px-6 sm:px-0">
     <header class="sticky top-0 bg-neutral-900 z-50">
       <div class="container mx-auto py-4 flex justify-between items-center">
         <NuxtLink to="/">
@@ -15,7 +15,7 @@
       </div>
     </header>
 
-    <main class="container mx-auto">
+    <main class="container mx-auto flex-1">
       <slot />
     </main>
 

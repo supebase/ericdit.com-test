@@ -3,6 +3,8 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+@plugin "@tailwindcss/typography";
+
 :root {
   --ui-radius: 0.5rem;
   --animation-duration: 0.3s;

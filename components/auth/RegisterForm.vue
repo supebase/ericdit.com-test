@@ -18,14 +18,28 @@
 
     <div class="form-group">
       <UInput
+        v-model="firstName"
+        type="text"
+        id="firstName"
+        variant="outline"
+        color="neutral"
+        size="xl"
+        icon="hugeicons:user-square"
+        class="w-full"
+        placeholder="你的名字"
+        :disabled="isSubmitting" />
+    </div>
+
+    <div class="form-group">
+      <UInput
         v-model="password"
         id="password"
         variant="outline"
         color="neutral"
         size="xl"
-        icon="hugeicons:lock-key"
+        icon="hugeicons:square-lock-add-02"
         class="w-full"
-        placeholder="登录密码"
+        placeholder="输入密码"
         :type="showPassword ? 'text' : 'password'"
         :disabled="isSubmitting">
         <template #trailing>
@@ -36,6 +50,30 @@
             tabindex="-1"
             :icon="showPassword ? 'hugeicons:view-off' : 'hugeicons:view'"
             @click="showPassword = !showPassword" />
+        </template>
+      </UInput>
+    </div>
+
+    <div class="form-group">
+      <UInput
+        v-model="password_confirm"
+        id="password"
+        variant="outline"
+        color="neutral"
+        size="xl"
+        icon="hugeicons:square-lock-check-02"
+        class="w-full"
+        placeholder="确认密码"
+        :type="showConfirmPassword ? 'text' : 'password'"
+        :disabled="isSubmitting">
+        <template #trailing>
+          <UButton
+            color="neutral"
+            variant="link"
+            size="md"
+            tabindex="-1"
+            :icon="showConfirmPassword ? 'hugeicons:view-off' : 'hugeicons:view'"
+            @click="showConfirmPassword = !showConfirmPassword" />
         </template>
       </UInput>
     </div>
@@ -53,7 +91,7 @@
       block
       :disabled="isSubmitting"
       :loading="isSubmitting">
-      {{ isSubmitting ? "正在处理" : "登录" }}
+      {{ isSubmitting ? "正在处理" : "注册" }}
     </UButton>
 
     <USeparator><span class="text-neutral-600 text-sm">或者</span></USeparator>
@@ -64,19 +102,22 @@
       size="xl"
       block
       :disabled="isSubmitting"
-      to="/register">
-      注册新用户
+      to="/login">
+      返回登录
     </UButton>
   </form>
 </template>
 
 <script setup lang="ts">
-const { login } = useAuth();
+const { register } = useAuth();
 const router = useRouter();
 
+const firstName = ref("");
 const email = ref("");
 const password = ref("");
+const password_confirm = ref("");
 const showPassword = ref(false);
+const showConfirmPassword = ref(false);
 const error = ref("");
 const isSubmitting = ref(false);
 
@@ -84,12 +125,26 @@ const handleSubmit = async () => {
   if (isSubmitting.value) return;
   error.value = "";
 
+  // 简单的表单验证
+  if (!firstName.value.trim()) {
+    error.value = "请输入用户名";
+    return;
+  }
+  if (!email.value.trim()) {
+    error.value = "请输入电子邮件";
+    return;
+  }
+  if (!password.value.trim()) {
+    error.value = "请输入密码";
+    return;
+  }
+
   try {
     isSubmitting.value = true;
-    await login(email.value, password.value);
+    await register(email.value, password.value, firstName.value);
     router.push("/");
   } catch (e: any) {
-    error.value = e.message || "登录失败，请重试";
+    error.value = e.message || "注册失败，请重试";
   } finally {
     isSubmitting.value = false;
   }

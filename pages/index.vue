@@ -5,8 +5,13 @@
     </div>
     <div
       v-else-if="error"
-      class="error bg-red-50 text-red-500 p-4 rounded">
-      {{ error.message || "加载失败，请稍后重试" }}
+      class="flex items-center justify-center min-h-[50vh]">
+      <UAlert
+        color="error"
+        variant="soft"
+        icon="hugeicons:alert-02"
+        :description="error?.message || '加载失败，请稍后重试'">
+      </UAlert>
     </div>
     <template v-else>
       <ContentItem
