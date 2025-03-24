@@ -71,7 +71,7 @@ const props = defineProps<{
   allowComments: boolean;
 }>();
 
-const { getComments, createComment, subscribeComments } = useComments();
+const { getCommentsList, createComment, subscribeComments } = useComments();
 
 const newComment = ref("");
 const isSubmitting = ref(false);
@@ -83,7 +83,7 @@ const {
   status,
   error,
 } = await useLazyAsyncData(`comments-${props.contentId}`, () =>
-  getComments(props.contentId, {
+  getCommentsList("content", props.contentId, {
     fields: ["id", "comment", "user_created.*", "date_created", "parent_comment_id.*"],
     sort: ["-date_created"],
   })

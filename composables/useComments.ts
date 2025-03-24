@@ -12,56 +12,34 @@ export const useComments = () => {
   const { $directus, $content, $realtimeClient } = useNuxtApp();
 
   /**
-   * 获取指定文章的评论列表
-   * @param contentId - 文章ID
+   * 获取评论列表，可以是文章的评论或评论的回复
    * @param options - 查询选项，包含过滤、排序、分页等条件
+   * @param type - 查询类型：'content' 获取文章评论，'reply' 获取评论回复
+   * @param id - 文章ID或父评论ID
    * @returns Promise<Comments.Item[]> 评论列表
    * @throws Error 当 API 请求失败时抛出错误
    */
-  const getComments = async (
-    contentId: string,
+  const getCommentsList = async (
+    type: "content" | "reply",
+    id: string,
     options?: Comments.QueryOptions
   ): Promise<Comments.Item[]> => {
     try {
+      const filterKey = type === "content" ? "content_id" : "parent_comment_id";
       const response = await $directus.request<Comments.Item[]>(
         $content.readItems("comments", {
           ...options,
           filter: {
             ...options?.filter,
-            content_id: { _eq: contentId },
+            [filterKey]: { _eq: id },
           },
         })
       );
       return response;
     } catch (error: any) {
-      throw new Error(error.errors?.[0]?.message || "获取评论列表失败");
-    }
-  };
-
-  /**
-   * 获取指定评论的回复列表
-   * @param commentId - 父评论ID
-   * @param options - 查询选项，包含过滤、排序、分页等条件
-   * @returns Promise<Comments.Item[]> 回复列表
-   * @throws Error 当 API 请求失败时抛出错误
-   */
-  const getReplies = async (
-    commentId: string,
-    options?: Comments.QueryOptions
-  ): Promise<Comments.Item[]> => {
-    try {
-      const response = await $directus.request<Comments.Item[]>(
-        $content.readItems("comments", {
-          ...options,
-          filter: {
-            ...options?.filter,
-            parent_comment_id: { _eq: commentId },
-          },
-        })
+      throw new Error(
+        error.errors?.[0]?.message || `获取${type === "content" ? "评论" : "回复"}列表失败`
       );
-      return response;
-    } catch (error: any) {
-      throw new Error(error.errors?.[0]?.message || "获取回复列表失败");
     }
   };
 
@@ -110,8 +88,7 @@ export const useComments = () => {
   };
 
   return {
-    getComments,
-    getReplies,
+    getCommentsList,
     createComment,
     subscribeComments,
   };

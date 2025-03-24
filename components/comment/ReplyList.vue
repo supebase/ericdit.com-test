@@ -14,12 +14,12 @@ const props = defineProps<{
   commentId: string;
 }>();
 
-const { getReplies } = useComments();
+const { getCommentsList } = useComments();
 const replies = ref<Comments.Item[]>([]);
 
 const fetchReplies = async () => {
   replies.value =
-    (await getReplies(props.commentId, {
+    (await getCommentsList("reply", props.commentId, {
       fields: ["id", "comment", "user_created.*", "date_created"],
       sort: ["-date_created"],
     })) || [];
