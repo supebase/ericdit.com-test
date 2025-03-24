@@ -1,32 +1,19 @@
 import type { User } from "~/types";
 
-/**
- * 用户在线状态管理组合式函数
- *
- * 提供用户在线状态的实时追踪、更新和订阅功能：
- * - 自动追踪用户活动状态
- * - 实时更新用户在线/离线状态
- * - 支持其他用户状态订阅
- * - 处理用户离线超时检测
- */
 export const useUserStatus = () => {
   const { $directus, $content, $realtimeClient } = useNuxtApp();
   const user = useState<User.Profile | null>("auth:user");
+  const usersStatus = useState<Record<string, boolean>>("users:status", () => ({}));
 
   // 状态更新锁，防止并发更新
   let isUpdating = false;
   let activityTimeout: ReturnType<typeof setTimeout>;
 
   // 用户状态相关常量
-  const ACTIVITY_TIMEOUT_MS = 1000; // 活动防抖时间
-  const OFFLINE_THRESHOLD_MINUTES = 7; // 离线判定阈值
-  const STATUS_CHECK_INTERVAL_MS = 60000; // 状态检查间隔
+  const ACTIVITY_TIMEOUT_MS = 1000;
+  const OFFLINE_THRESHOLD_MINUTES = 7;
+  const STATUS_CHECK_INTERVAL_MS = 60000;
 
-  /**
-   * 更新用户在线状态
-   * @param status - true 表示在线，false 表示离线
-   * @returns Promise<void>
-   */
   const updateUserStatus = async (status: boolean) => {
     if (!user.value?.id || isUpdating) return;
 
@@ -65,11 +52,6 @@ export const useUserStatus = () => {
     }
   };
 
-  /**
-   * 检查指定用户的在线状态
-   * @param userId - 要检查的用户ID
-   * @returns Promise<boolean> - true 表示在线，false 表示离线
-   */
   const checkUserStatus = async (userId: string): Promise<boolean> => {
     try {
       const response = await $directus.request<User.Status[]>(
@@ -87,24 +69,18 @@ export const useUserStatus = () => {
       const now = new Date();
       const diffMinutes = (now.getTime() - lastActivity.getTime()) / (1000 * 60);
 
-      if (diffMinutes > OFFLINE_THRESHOLD_MINUTES) {
-        return false;
-      }
-
-      return response[0].status;
+      const status = diffMinutes <= OFFLINE_THRESHOLD_MINUTES && response[0].status;
+      usersStatus.value[userId] = status;
+      return status;
     } catch (error) {
       console.error("Failed to check user status:", error);
       return false;
     }
   };
 
-  /**
-   * 订阅用户状态变化
-   * @param userId - 要订阅的用户ID
-   * @param callback - 状态变化时的回调函数
-   * @returns 清理函数，用于取消订阅
-   */
-  const subscribeUserStatus = async (userId: string, callback: (status: boolean) => void) => {
+  const subscribeUserStatus = async (userId: string) => {
+    if (usersStatus.value[userId] !== undefined) return;
+
     try {
       const { subscription } = await $realtimeClient.subscribe("users_status", {
         query: {
@@ -116,16 +92,14 @@ export const useUserStatus = () => {
       });
 
       const checkInterval = setInterval(async () => {
-        const status = await checkUserStatus(userId);
-        callback(status);
+        await checkUserStatus(userId);
       }, STATUS_CHECK_INTERVAL_MS);
 
       for await (const item of subscription) {
         if (!item) continue;
 
         if (item.event === "update" || item.event === "create") {
-          const status = await checkUserStatus(userId);
-          callback(status);
+          await checkUserStatus(userId);
         }
       }
 
@@ -135,9 +109,6 @@ export const useUserStatus = () => {
     }
   };
 
-  /**
-   * 防抖处理的活动状态更新函数
-   */
   const debouncedUpdateActivity = () => {
     clearTimeout(activityTimeout);
     activityTimeout = setTimeout(() => {
@@ -147,9 +118,6 @@ export const useUserStatus = () => {
     }, ACTIVITY_TIMEOUT_MS);
   };
 
-  /**
-   * 清理函数
-   */
   const cleanup = () => {
     if (activityTimeout) {
       clearTimeout(activityTimeout);
@@ -157,6 +125,7 @@ export const useUserStatus = () => {
   };
 
   return {
+    usersStatus,
     updateUserStatus,
     checkUserStatus,
     updateLastActivity: debouncedUpdateActivity,

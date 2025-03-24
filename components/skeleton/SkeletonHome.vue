@@ -7,23 +7,23 @@
         class="py-2">
         <div class="space-y-4">
           <!-- 标题骨架 -->
-          <div class="text-lg mb-2 bg-neutral-700 h-6 w-3/4 rounded-md animate-pulse"></div>
+          <div class="text-lg mb-2 bg-neutral-800 h-6 w-3/4 rounded-md animate-pulse"></div>
 
           <!-- 图片/内容骨架 -->
-          <div class="bg-neutral-700 rounded-lg w-full h-48 animate-pulse"></div>
+          <div class="bg-neutral-800 rounded-lg w-full h-48 animate-pulse"></div>
 
           <!-- 底部操作栏 -->
           <div class="flex justify-between items-center space-x-4">
             <!-- 头像和时间 -->
             <div class="flex items-center space-x-2">
-              <div class="w-8 h-8 rounded-full bg-neutral-700 animate-pulse"></div>
-              <div class="w-16 h-4 bg-neutral-700 rounded-md animate-pulse"></div>
+              <div class="w-8 h-8 rounded-full bg-neutral-800 animate-pulse"></div>
+              <div class="w-16 h-4 bg-neutral-800 rounded-md animate-pulse"></div>
             </div>
 
             <div class="flex items-center space-x-15">
-              <div class="w-8 h-5 bg-neutral-700 rounded-md animate-pulse"></div>
-              <div class="w-8 h-5 bg-neutral-700 rounded-md animate-pulse"></div>
-              <div class="w-8 h-5 bg-neutral-700 rounded-md animate-pulse"></div>
+              <div class="w-8 h-5 bg-neutral-800 rounded-md animate-pulse"></div>
+              <div class="w-8 h-5 bg-neutral-800 rounded-md animate-pulse"></div>
+              <div class="w-8 h-5 bg-neutral-800 rounded-md animate-pulse"></div>
             </div>
           </div>
         </div>

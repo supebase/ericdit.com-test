@@ -1,15 +1,15 @@
 <template>
-  <div v-if="loading && !bookmarksCount">
+  <div v-if="loading && bookmarksCount === null">
     <UIcon
       name="svg-spinners:ring-resize"
       class="size-6 text-neutral-500" />
   </div>
   <div v-else>
     <UChip
-      :show="bookmarksCount > 0"
+      :show="bookmarksCount !== null && bookmarksCount > 0"
       :color="bookmarksCount ? 'warning' : 'neutral'"
       :ui="{ base: 'py-2 px-1.5 font-bold' }"
-      :text="bookmarksCount">
+      :text="bookmarksCount ?? undefined">
       <NuxtLink to="/bookmarks">
         <UIcon
           name="hugeicons:all-bookmark"
@@ -23,7 +23,7 @@
 <script setup lang="ts">
 const { getBookmarks, subscribeBookmarks } = useBookmarks();
 const { user } = useAuth();
-const bookmarksCount = ref(0);
+const bookmarksCount = ref<number | null>(null);
 const loading = ref(false);
 
 const fetchBookmarksCount = async () => {

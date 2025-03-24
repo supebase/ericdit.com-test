@@ -4,7 +4,7 @@
       <UChip
         inset
         position="bottom-right"
-        :color="userStatus ? 'primary' : 'neutral'">
+        :color="usersStatus[reply.user_created.id] ? 'primary' : 'neutral'">
         <UAvatar :src="useAssets(reply.user_created.avatar || '')" />
       </UChip>
       <span class="font-medium">{{ reply.user_created.first_name }}</span>
@@ -25,20 +25,9 @@ const props = defineProps<{
   reply: Comments.Item;
 }>();
 
-const { checkUserStatus, subscribeUserStatus, cleanup } = useUserStatus();
-const userStatus = ref(false);
+const { usersStatus, subscribeUserStatus } = useUserStatus();
 
 onMounted(async () => {
-  userStatus.value = await checkUserStatus(props.reply.user_created.id);
-
-  if (import.meta.client) {
-    subscribeUserStatus(props.reply.user_created.id, (status) => {
-      userStatus.value = status;
-    });
-  }
-});
-
-onUnmounted(() => {
-  cleanup();
+  await subscribeUserStatus(props.reply.user_created.id);
 });
 </script>
