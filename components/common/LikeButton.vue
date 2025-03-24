@@ -6,9 +6,15 @@
       class="text-sm flex items-center space-x-2 text-neutral-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       :class="{ 'text-primary-400': isLiked }">
       <UIcon
+        name="svg-spinners:ring-resize"
+        :size="iconSize"
+        class="text-neutral-500"
+        v-if="isProcessing" />
+      <UIcon
+        v-else
         :name="isLiked ? 'hugeicons:heart-check' : 'hugeicons:favourite'"
         :size="iconSize" />
-      <span>{{ likesCount }}</span>
+      <span class="nums tabular-nums">{{ likesCount }}</span>
     </button>
   </div>
 </template>

@@ -10,7 +10,7 @@
       "
       :size="iconSize"
       class="text-neutral-400" />
-    <span class="text-sm text-neutral-400">
+    <span class="text-sm text-neutral-400 nums tabular-nums">
       {{ allowComments ? commentsCount : '~' }}
     </span>
   </div>

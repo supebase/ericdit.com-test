@@ -1,7 +1,7 @@
 <template>
-  <div class="flex items-center gap-4">
+  <div class="flex items-center">
     <template v-if="isAuthenticated">
-      <div class="flex items-center gap-2">
+      <div class="flex items-center">
         <NuxtLink to="/account">
           <UAvatar
             :src="useAssets(user?.avatar || '')"
@@ -13,7 +13,7 @@
       <NuxtLink to="/login">
         <UAvatar
           icon="hugeicons:lock-key"
-          size="lg" />
+          class="size-9" />
       </NuxtLink>
     </template>
   </div>

@@ -1,9 +1,7 @@
 <template>
   <div class="container">
-    <div
-      v-if="isLoading && !contents"
-      class="loading flex items-center justify-center py-8">
-      <span class="loading-indicator">加载中...</span>
+    <div v-if="isLoading && !contents">
+      <SkeletonHome />
     </div>
     <div
       v-else-if="error"

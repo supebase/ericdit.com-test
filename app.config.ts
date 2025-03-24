@@ -20,7 +20,7 @@ export default defineAppConfig({
       compoundVariants: [
         {
           class: {
-            leadingIcon: "animate-none", // 禁用按钮前置图标的动画效果
+            leadingIcon: "animate-none size-5", // 禁用按钮前置图标的动画效果
           },
         },
       ],

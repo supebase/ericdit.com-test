@@ -5,12 +5,10 @@
         <NuxtLink to="/">
           <CommonLogo />
         </NuxtLink>
-        <div class="flex items-center gap-6">
-          <div
+        <div class="flex items-center space-x-8">
+          <CommonBookmarkCounter
             v-if="isAuthenticated"
-            class="mt-3">
-            <CommonBookmarkCounter />
-          </div>
+            class="translate-y-1.5" />
 
           <AuthStatus />
         </div>

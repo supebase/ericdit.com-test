@@ -34,7 +34,7 @@
           <UAvatar
             :src="useAssets(content.user_created.avatar) || undefined"
             size="xs" />
-          <div class="text-sm text-neutral-400">
+          <div class="text-sm text-neutral-400 nums">
             {{ useDatetime(content.date_created) }}
           </div>
         </div>

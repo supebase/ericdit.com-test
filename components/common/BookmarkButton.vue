@@ -6,6 +6,12 @@
       class="text-sm flex items-center gap-1 text-neutral-400 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       :class="{ 'text-yellow-400': isBookmarked }">
       <UIcon
+        name="svg-spinners:ring-resize"
+        :size="iconSize"
+        class="text-neutral-500"
+        v-if="isProcessing" />
+      <UIcon
+        v-else
         :name="isBookmarked ? 'hugeicons:bookmark-minus-02' : 'hugeicons:bookmark-add-02'"
         :size="iconSize" />
     </button>
