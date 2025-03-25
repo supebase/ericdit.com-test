@@ -4,9 +4,19 @@
       <NuxtLink :to="`/article/${content.id}`">
         <div class="text-lg mb-2">{{ content.title }}</div>
       </NuxtLink>
-      <div v-if="content.images.length === 1">
+      <div
+        v-if="content.images.length === 1"
+        class="relative">
+        <div
+          v-if="singleImageLoading"
+          class="absolute inset-0 flex items-center justify-center bg-neutral-800 rounded-lg">
+          <UIcon
+            name="svg-spinners:6-dots-scale-middle"
+            class="size-7 text-neutral-500" />
+        </div>
         <img
           :src="useAssets(content.images[0].directus_files_id) || undefined"
+          @load="onImageLoad('single')"
           class="rounded-lg aspect-[calc(4*3+1)/8] object-cover" />
       </div>
       <div
@@ -24,9 +34,19 @@
           :ui="{
             item: 'basis-[85%] transition-opacity [&:not(.is-snapped)]:opacity-40 duration-500',
           }">
-          <img
-            :src="useAssets(item.directus_files_id) || undefined"
-            class="rounded-lg aspect-[calc(4*3+1)/8] object-cover" />
+          <div class="relative">
+            <div
+              v-if="carouselImageLoading"
+              class="absolute inset-0 flex items-center justify-center bg-neutral-800 rounded-lg">
+              <UIcon
+                name="svg-spinners:6-dots-scale-middle"
+                class="size-7 text-neutral-500" />
+            </div>
+            <img
+              :src="useAssets(item.directus_files_id) || undefined"
+              @load="onImageLoad('carousel')"
+              class="rounded-lg aspect-[calc(4*3+1)/8] object-cover" />
+          </div>
         </UCarousel>
       </div>
       <div class="flex justify-between items-center">
@@ -60,4 +80,17 @@ import type { Contents } from "~/types";
 defineProps<{
   content: Contents.Item;
 }>();
+
+// 图片加载状态
+const singleImageLoading = ref(true);
+const carouselImageLoading = ref(true);
+
+// 图片加载完成处理函数
+const onImageLoad = (type: "single" | "carousel") => {
+  if (type === "single") {
+    singleImageLoading.value = false;
+  } else {
+    carouselImageLoading.value = false;
+  }
+};
 </script>

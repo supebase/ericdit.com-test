@@ -75,6 +75,34 @@ export const useAuth = () => {
   };
 
   /**
+   * 更新用户地理位置信息
+   * 获取用户当前 IP 对应的地理位置，并更新到用户资料中
+   * 该方法通常在用户登录后或需要更新位置信息时调用
+   *
+   * @async
+   * @throws {Error} 当位置信息获取失败或更新失败时，错误会被捕获并记录，但不会抛出
+   * @returns {Promise<void>}
+   */
+  const updateUserLocation = async (): Promise<void> => {
+    try {
+      const { location } = await useLocationIP();
+      const user = await $authClient.request(
+        $user.readMe({
+          fields: ["id"],
+        })
+      );
+
+      await $authClient.request(
+        $user.updateUser(user.id, {
+          location,
+        })
+      );
+    } catch (error: any) {
+      throw new Error(error.errors?.[0]?.message || "更新用户地理位置失败");
+    }
+  };
+
+  /**
    * 刷新用户信息
    * 获取最新的用户数据并更新状态
    * @throws Error 当获取用户信息失败时抛出错误
@@ -95,6 +123,7 @@ export const useAuth = () => {
     login,
     logout,
     register,
+    updateUserLocation,
     refreshUser,
     validateEmail,
   };

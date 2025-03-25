@@ -7,9 +7,18 @@
             :src="useAssets(user?.avatar || '')"
             size="3xl" />
         </div>
-        <div>
-          <h1 class="text-2xl font-bold">{{ user?.first_name }}</h1>
-          <p class="text-neutral-500">{{ user?.email }}</p>
+        <div class="w-full">
+          <div class="text-2xl font-bold">{{ user?.first_name }}</div>
+          <div class="text-neutral-500 flex justify-between items-center">
+            <div>{{ user?.email }}</div>
+            <div class="text-sm text-neutral-500 flex items-center space-x-2">
+              <UIcon
+                v-if="user?.location"
+                name="hugeicons:location-04"
+                class="size-4" />
+              <div>{{ user?.location }}</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -61,7 +70,6 @@ const loadUserStats = async () => {
     isStatsLoading.value = true;
     await fetchStats(user.value.id);
   } catch (error) {
-    console.error("Failed to fetch user stats:", error);
     toast.add({
       title: "获取数据失败",
       description: "请稍后重试",

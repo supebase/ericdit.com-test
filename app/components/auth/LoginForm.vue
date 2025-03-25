@@ -57,7 +57,7 @@
 import { validateEmail } from "~/utils/validation";
 import { AUTH_ERROR_MESSAGES } from "~/types/auth";
 
-const { login } = useAuth();
+const { login, updateUserLocation } = useAuth();
 const toast = useToast();
 
 const email = ref("");
@@ -89,6 +89,7 @@ const handleSubmit = async () => {
   try {
     isSubmitting.value = true;
     await login(email.value, password.value);
+    await updateUserLocation();
     navigateTo("/");
   } catch (error: any) {
     toast.add({

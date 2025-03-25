@@ -17,6 +17,10 @@
           <div class="flex items-center gap-3">
             <div class="font-medium">{{ comment.user_created.first_name }}</div>
             <div class="text-sm text-neutral-500">{{ useDatetime(comment.date_created) }}</div>
+            <div class="text-sm text-neutral-500">&bull;</div>
+            <div class="text-sm text-neutral-500">
+              {{ comment.user_created.location }}
+            </div>
           </div>
 
           <CommonLikeButton
@@ -24,13 +28,13 @@
             :icon-size="18" />
         </div>
 
-        <div>{{ comment.comment }}</div>
+        <div class="mt-1">{{ comment.comment }}</div>
 
         <div class="mt-1.5 flex justify-between items-center gap-4">
           <button
             @click="toggleReplyInput"
             class="text-sm text-neutral-500 nums tabular-nums cursor-pointer">
-            {{ replyCount > 0 ? `回复（已有 ${replyCount} 人参与）` : "回复" }}
+            {{ replyCount > 0 ? `回复（${replyCount} 人回应）` : "回复" }}
           </button>
           <button
             v-if="showReplyInput"
