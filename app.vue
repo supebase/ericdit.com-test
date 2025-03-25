@@ -1,10 +1,16 @@
 <template>
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <UApp
+    :toaster="appConfig.toaster"
+    :tooltip="appConfig.tooltip">
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </UApp>
 </template>
 
 <script setup lang="ts">
+const appConfig = useAppConfig();
+
 // 导入认证和用户状态相关的组合式函数
 const { refreshUser, isAuthenticated } = useAuth();
 const { updateLastActivity, updateUserStatus, cleanup } = useUserStatus();

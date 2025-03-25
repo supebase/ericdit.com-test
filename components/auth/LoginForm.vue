@@ -5,39 +5,22 @@
     <div class="form-group">
       <UInput
         v-model="email"
-        type="email"
-        id="email"
         variant="outline"
         color="neutral"
         size="xl"
         icon="hugeicons:at"
         class="w-full"
         placeholder="电子邮件"
+        @keydown.space.prevent
         :disabled="isSubmitting" />
     </div>
 
     <div class="form-group">
-      <UInput
+      <AuthPasswordInput
         v-model="password"
-        id="password"
-        variant="outline"
-        color="neutral"
-        size="xl"
-        icon="hugeicons:lock-key"
-        class="w-full"
         placeholder="登录密码"
-        :type="showPassword ? 'text' : 'password'"
-        :disabled="isSubmitting">
-        <template #trailing>
-          <UButton
-            color="neutral"
-            variant="link"
-            size="md"
-            tabindex="-1"
-            :icon="showPassword ? 'hugeicons:view-off' : 'hugeicons:view'"
-            @click="showPassword = !showPassword" />
-        </template>
-      </UInput>
+        icon="hugeicons:lock-key"
+        :disabled="isSubmitting" />
     </div>
 
     <div
@@ -71,27 +54,56 @@
 </template>
 
 <script setup lang="ts">
+import { validateEmail } from "~/utils/validation";
+import { AUTH_ERROR_MESSAGES } from "~/types/auth";
+
 const { login } = useAuth();
-const router = useRouter();
+const toast = useToast();
 
 const email = ref("");
 const password = ref("");
-const showPassword = ref(false);
 const error = ref("");
 const isSubmitting = ref(false);
 
 const handleSubmit = async () => {
-  if (isSubmitting.value) return;
-  error.value = "";
+  if (!email.value || !password.value) {
+    toast.add({
+      title: "登录提示",
+      description: "请输入有效的电子邮件及登录密码。",
+      icon: "hugeicons:alert-02",
+      color: "warning",
+    });
+    return;
+  }
+
+  if (!validateEmail(email.value)) {
+    toast.add({
+      title: "登录提示",
+      description: "电子邮件地址格式不正确，请检查。",
+      icon: "hugeicons:alert-02",
+      color: "warning",
+    });
+    return;
+  }
 
   try {
     isSubmitting.value = true;
     await login(email.value, password.value);
-    router.push("/");
-  } catch (e: any) {
-    error.value = e.message || "登录失败，请重试";
+    navigateTo("/");
+  } catch (error: any) {
+    toast.add({
+      title: "登录提示",
+      description: AUTH_ERROR_MESSAGES[error.errors?.[0]?.message] || "登录失败，请稍后重试。",
+      icon: "hugeicons:alert-02",
+      color: "error",
+    });
   } finally {
     isSubmitting.value = false;
   }
 };
+
+onDeactivated(() => {
+  email.value = "";
+  password.value = "";
+});
 </script>

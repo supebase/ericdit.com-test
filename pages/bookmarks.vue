@@ -1,42 +1,44 @@
 <template>
-  <div class="bookmarks-page">
-    <div class="flex items-center gap-2 mb-8">
-      <UIcon
-        name="heroicons:bookmark"
-        class="text-xl" />
-      <h1 class="text-xl font-bold">我的收藏 ({{ bookmarksCount }})</h1>
+  <div>
+    <div class="flex items-center my-6">
+      <USeparator>
+        <div class="text-neutral-600 text-base nums tabular-nums">我的收藏</div>
+      </USeparator>
     </div>
 
     <div
       v-if="loading"
-      class="flex justify-center py-8">
+      class="flex justify-center items-center py-12">
       <UIcon
-        name="line-md:loading-loop"
-        class="text-2xl" />
+        name="svg-spinners:ring-resize"
+        class="size-6 text-neutral-500" />
     </div>
 
     <div
       v-else-if="bookmarks.length === 0"
-      class="text-center py-8 text-neutral-500">
-      暂无收藏内容
+      class="flex flex-col items-center justify-center py-12 space-y-4">
+      <UIcon
+        name="hugeicons:bookmark-off-02"
+        class="text-4xl text-neutral-600" />
+      <p class="text-neutral-600 text-sm">暂无收藏内容</p>
     </div>
 
     <div
       v-else
-      class="space-y-4">
-      <div
+      class="space-y-6">
+      <UCard
         v-for="bookmark in bookmarks"
-        :key="bookmark.id"
-        class="border-b pb-4">
-        <!-- 这里根据你的内容类型来展示具体内容 -->
+        :key="bookmark.id">
         <NuxtLink
           :to="`/article/${bookmark.content_id.id}`"
-          class="hover:text-blue-600 transition-colors">
-          {{ bookmark.content_id.title }}
+          class="block mb-2">
+          <h2 class="text-base font-medium">
+            {{ bookmark.content_id.title }}
+          </h2>
         </NuxtLink>
 
-        <div>{{ useDatetime(bookmark.date_created) }}收藏</div>
-      </div>
+        <div class="text-sm text-neutral-500">{{ useDatetime(bookmark.date_created) }}收藏</div>
+      </UCard>
     </div>
   </div>
 </template>

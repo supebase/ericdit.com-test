@@ -1,7 +1,6 @@
 <template>
   <div class="container mx-auto py-8">
     <div class="rounded-lg shadow py-6">
-      <!-- 用户基本信息 -->
       <div class="flex items-center gap-4 mb-8">
         <div class="flex items-center justify-center">
           <UAvatar
@@ -14,7 +13,6 @@
         </div>
       </div>
 
-      <!-- 统计信息 -->
       <div class="grid grid-cols-2 gap-4 mb-8">
         <div class="p-4 rounded-lg bg-neutral-800">
           <div class="text-2xl font-bold text-center nums">
@@ -30,7 +28,6 @@
         </div>
       </div>
 
-      <!-- 退出按钮 -->
       <UButton
         @click="handleLogout"
         size="xl"
@@ -49,7 +46,6 @@ definePageMeta({
   middleware: ["auth"],
 });
 
-const router = useRouter();
 const { user, logout } = useAuth();
 const { commentsCount, likesCount, fetchStats } = useUserStats();
 const toast = useToast();
@@ -83,12 +79,11 @@ const handleLogout = async () => {
   try {
     isLoading.value = true;
     await logout();
-    router.push("/login");
+    navigateTo("/");
   } catch (error) {
-    console.error("Failed to logout:", error);
     toast.add({
       title: "退出失败",
-      description: "请稍后重试",
+      description: "退出时发生错误，请稍后重试。",
       color: "error",
     });
   } finally {

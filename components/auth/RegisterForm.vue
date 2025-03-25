@@ -13,6 +13,7 @@
         icon="hugeicons:at"
         class="w-full"
         placeholder="电子邮件"
+        @keydown.space.prevent
         :disabled="isSubmitting" />
     </div>
 
@@ -31,51 +32,19 @@
     </div>
 
     <div class="form-group">
-      <UInput
+      <AuthPasswordInput
         v-model="password"
-        id="password"
-        variant="outline"
-        color="neutral"
-        size="xl"
-        icon="hugeicons:square-lock-add-02"
-        class="w-full"
         placeholder="输入密码"
-        :type="showPassword ? 'text' : 'password'"
-        :disabled="isSubmitting">
-        <template #trailing>
-          <UButton
-            color="neutral"
-            variant="link"
-            size="md"
-            tabindex="-1"
-            :icon="showPassword ? 'hugeicons:view-off' : 'hugeicons:view'"
-            @click="showPassword = !showPassword" />
-        </template>
-      </UInput>
+        icon="hugeicons:square-lock-add-02"
+        :disabled="isSubmitting" />
     </div>
 
     <div class="form-group">
-      <UInput
+      <AuthPasswordInput
         v-model="password_confirm"
-        id="password"
-        variant="outline"
-        color="neutral"
-        size="xl"
-        icon="hugeicons:square-lock-check-02"
-        class="w-full"
         placeholder="确认密码"
-        :type="showConfirmPassword ? 'text' : 'password'"
-        :disabled="isSubmitting">
-        <template #trailing>
-          <UButton
-            color="neutral"
-            variant="link"
-            size="md"
-            tabindex="-1"
-            :icon="showConfirmPassword ? 'hugeicons:view-off' : 'hugeicons:view'"
-            @click="showConfirmPassword = !showConfirmPassword" />
-        </template>
-      </UInput>
+        icon="hugeicons:square-lock-check-02"
+        :disabled="isSubmitting" />
     </div>
 
     <div
@@ -109,44 +78,140 @@
 </template>
 
 <script setup lang="ts">
+import { validateEmail, validateUsername, validatePassword } from "~/utils/validation";
+import { AUTH_ERROR_MESSAGES } from "~/types/auth";
+
+const { $user, $authClient } = useNuxtApp();
 const { register } = useAuth();
-const router = useRouter();
+const toast = useToast();
 
 const firstName = ref("");
 const email = ref("");
 const password = ref("");
 const password_confirm = ref("");
-const showPassword = ref(false);
-const showConfirmPassword = ref(false);
 const error = ref("");
 const isSubmitting = ref(false);
 
 const handleSubmit = async () => {
-  if (isSubmitting.value) return;
-  error.value = "";
+  if (!email.value || !firstName.value || !password.value || !password_confirm.value) {
+    toast.add({
+      title: "注册提示",
+      description: "请完整填写所有必填字段信息。",
+      icon: "hugeicons:alert-02",
+      color: "warning",
+    });
+    return;
+  }
 
-  // 简单的表单验证
-  if (!firstName.value.trim()) {
-    error.value = "请输入用户名";
+  if (!validateEmail(email.value)) {
+    toast.add({
+      title: "注册提示",
+      description: "电子邮件地址格式不正确，请检查。",
+      icon: "hugeicons:alert-02",
+      color: "warning",
+    });
     return;
   }
-  if (!email.value.trim()) {
-    error.value = "请输入电子邮件";
+
+  const nameValidation = validateUsername(firstName.value);
+  if (!nameValidation.valid) {
+    toast.add({
+      title: "注册提示",
+      description: nameValidation.message,
+      icon: "hugeicons:alert-02",
+      color: "warning",
+    });
     return;
   }
-  if (!password.value.trim()) {
-    error.value = "请输入密码";
+
+  const passwordValidation = validatePassword(password.value);
+  if (!passwordValidation.valid) {
+    toast.add({
+      title: "注册提示",
+      description: passwordValidation.message,
+      icon: "hugeicons:alert-02",
+      color: "warning",
+    });
+    return;
+  }
+
+  if (password.value !== password_confirm.value) {
+    toast.add({
+      title: "注册提示",
+      description: "两次输入的密码不匹配。",
+      icon: "hugeicons:alert-02",
+      color: "warning",
+    });
     return;
   }
 
   try {
     isSubmitting.value = true;
+
+    const existingUsers = await $authClient.request(
+      $user.readUsers({
+        filter: {
+          _or: [
+            { email: { _eq: email.value } },
+            { first_name: { _eq: firstName.value.toLowerCase() } },
+          ],
+        },
+      })
+    );
+
+    const emailExists = existingUsers.some((user) => user.email === email.value.toLowerCase());
+    const nameExists = existingUsers.some(
+      (user) => user.first_name.toLowerCase() === firstName.value.toLowerCase()
+    );
+
+    if (emailExists) {
+      toast.add({
+        title: "注册提示",
+        description: "电子邮件已被注册，请使用其他电子邮件。",
+        icon: "hugeicons:alert-02",
+        color: "warning",
+      });
+      isSubmitting.value = false;
+      return;
+    }
+
+    if (nameExists) {
+      toast.add({
+        title: "注册提示",
+        description: "名字已被使用，请选择其他名字。",
+        icon: "hugeicons:alert-02",
+        color: "warning",
+      });
+      isSubmitting.value = false;
+      return;
+    }
+
     await register(email.value, password.value, firstName.value);
-    router.push("/");
-  } catch (e: any) {
-    error.value = e.message || "注册失败，请重试";
+
+    toast.add({
+      title: "注册提示",
+      description: "注册完成，自动登录成功。",
+      icon: "hugeicons:checkmark-circle-02",
+      color: "success",
+    });
+
+    navigateTo("/");
+  } catch (error: any) {
+    toast.add({
+      title: "注册提示",
+      description: AUTH_ERROR_MESSAGES[error.errors?.[0]?.message] || "注册失败，请稍后重试。",
+      icon: "hugeicons:alert-02",
+      color: "error",
+    });
   } finally {
     isSubmitting.value = false;
   }
 };
+
+onDeactivated(() => {
+  firstName.value = "";
+  email.value = "";
+  password.value = "";
+  password_confirm.value = "";
+});
 </script>

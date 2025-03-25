@@ -1,4 +1,5 @@
 import type { User } from "~/types";
+import { validateEmail } from "~/utils/validation";
 
 /**
  * 用户认证管理组合式函数
@@ -35,7 +36,7 @@ export const useAuth = () => {
       await $authClient.login(email, password);
       await refreshUser();
     } catch (error: any) {
-      throw new Error(error.errors?.[0]?.message || "登录失败");
+      throw error;
     }
   };
 
@@ -95,5 +96,6 @@ export const useAuth = () => {
     logout,
     register,
     refreshUser,
+    validateEmail,
   };
 };
