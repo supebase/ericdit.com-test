@@ -1,5 +1,5 @@
 <template>
-  <article class="py-4">
+  <article class="py-4 select-none">
     <div class="space-y-4">
       <NuxtLink :to="`/article/${content.id}`">
         <div class="text-lg mb-2">{{ content.title }}</div>

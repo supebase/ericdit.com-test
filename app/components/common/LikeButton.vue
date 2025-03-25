@@ -111,4 +111,15 @@ onMounted(async () => {
 
   await fetchLikes();
 });
+
+watch(isAuthenticated, (newValue) => {
+  if (!newValue) {
+    // 用户退出时重置状态
+    isLiked.value = false;
+    currentLikeId.value = null;
+  } else {
+    // 用户登录时重新获取状态
+    fetchLikes();
+  }
+});
 </script>

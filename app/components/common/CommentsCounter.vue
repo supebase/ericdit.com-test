@@ -1,5 +1,7 @@
 <template>
-  <div class="flex justify-end items-center space-x-2">
+  <NuxtLink
+    :to="`/article/${contentId}`"
+    class="flex justify-end items-center space-x-2">
     <UIcon
       :name="
         !allowComments
@@ -11,9 +13,9 @@
       :size="iconSize"
       class="text-neutral-400" />
     <span class="text-sm text-neutral-400 nums tabular-nums">
-      {{ allowComments ? commentsCount : '~' }}
+      {{ allowComments ? commentsCount : "" }}
     </span>
-  </div>
+  </NuxtLink>
 </template>
 
 <script setup lang="ts">

@@ -89,8 +89,9 @@ const handleSubmit = async () => {
   try {
     isSubmitting.value = true;
     await login(email.value, password.value);
-    await updateUserLocation();
     navigateTo("/");
+
+    updateUserLocation();
   } catch (error: any) {
     toast.add({
       title: "登录提示",

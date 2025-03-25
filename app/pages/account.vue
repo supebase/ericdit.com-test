@@ -1,20 +1,8 @@
 <template>
-  <div class="container mx-auto py-8">
+  <div class="container mx-auto py-8 select-none">
     <div class="rounded-lg shadow py-6">
       <div class="flex items-center gap-4 mb-8">
-        <div
-          class="flex items-center justify-center relative cursor-pointer group"
-          @click="handleAvatarUpload">
-          <UAvatar
-            :src="useAssets(user?.avatar || '')"
-            size="3xl" />
-          <div
-            class="absolute -bottom-1 -right-1 bg-neutral-900 size-5 rounded-full flex items-center justify-center">
-            <UIcon
-              name="hugeicons:upload-circle-01"
-              class="size-4 text-neutral-500" />
-          </div>
-        </div>
+        <UserAvatar />
         <div class="w-full">
           <div class="text-2xl font-bold">{{ user?.first_name }}</div>
           <div class="text-neutral-500 flex justify-between items-center">
@@ -32,14 +20,34 @@
 
       <div class="grid grid-cols-2 gap-4 mb-8">
         <div class="p-4 rounded-lg bg-neutral-800">
-          <div class="text-2xl font-bold text-center nums">
-            {{ commentsCount }}
+          <div class="text-2xl font-bold text-center nums tabular-nums">
+            <div class="number-wrapper">
+              <span
+                :class="{
+                  'number-animate-up': shouldAnimateComments === 'up',
+                  'number-animate-down': shouldAnimateComments === 'down',
+                }"
+                :data-old="prevCommentsCount"
+                :data-new="commentsCount"
+                >{{ commentsCount }}</span
+              >
+            </div>
           </div>
           <div class="text-neutral-500 text-center">评论数</div>
         </div>
         <div class="p-4 rounded-lg bg-neutral-800">
-          <div class="text-2xl font-bold text-center nums">
-            {{ likesCount }}
+          <div class="text-2xl font-bold text-center nums tabular-nums">
+            <div class="number-wrapper">
+              <span
+                :class="{
+                  'number-animate-up': shouldAnimateLikes === 'up',
+                  'number-animate-down': shouldAnimateLikes === 'down',
+                }"
+                :data-old="prevLikesCount"
+                :data-new="likesCount"
+                >{{ likesCount }}</span
+              >
+            </div>
           </div>
           <div class="text-neutral-500 text-center">点赞数</div>
         </div>
@@ -69,14 +77,36 @@ const toast = useToast();
 
 const isLoading = ref(false);
 const isStatsLoading = ref(false);
+const shouldAnimateComments = ref<"up" | "down" | false>(false);
+const shouldAnimateLikes = ref<"up" | "down" | false>(false);
+const isFirstLoad = ref(true);
+const prevCommentsCount = ref(0);
+const prevLikesCount = ref(0);
 
-// 统一处理获取用户统计数据
 const loadUserStats = async () => {
   if (!user.value?.id || isStatsLoading.value) return;
 
   try {
     isStatsLoading.value = true;
+    prevCommentsCount.value = commentsCount.value;
+    prevLikesCount.value = likesCount.value;
+
     await fetchStats(user.value.id);
+
+    if (!isFirstLoad.value) {
+      if (prevCommentsCount.value !== commentsCount.value) {
+        shouldAnimateComments.value = commentsCount.value > prevCommentsCount.value ? "up" : "down";
+        setTimeout(() => {
+          shouldAnimateComments.value = false;
+        }, 500);
+      }
+      if (prevLikesCount.value !== likesCount.value) {
+        shouldAnimateLikes.value = likesCount.value > prevLikesCount.value ? "up" : "down";
+        setTimeout(() => {
+          shouldAnimateLikes.value = false;
+        }, 500);
+      }
+    }
   } catch (error) {
     toast.add({
       title: "获取数据失败",
@@ -85,16 +115,10 @@ const loadUserStats = async () => {
     });
   } finally {
     isStatsLoading.value = false;
+    isFirstLoad.value = false;
   }
 };
 
-// 处理头像上传
-const handleAvatarUpload = () => {
-  // TODO: 实现头像上传逻辑
-  console.log("上传头像");
-};
-
-// 退出登录
 const handleLogout = async () => {
   if (isLoading.value) return;
 
@@ -113,23 +137,109 @@ const handleLogout = async () => {
   }
 };
 
-// 监听用户ID变化
-watch(
-  () => user.value?.id,
-  (newId) => {
-    if (newId) {
-      loadUserStats();
-    }
-  }
-);
+// watch(
+//   () => user.value?.id,
+//   (newId) => {
+//     if (newId) {
+//       isFirstLoad.value = true;
+//       loadUserStats();
+//     }
+//   }
+// );
 
-// 页面激活时获取最新数据
 onActivated(() => {
   loadUserStats();
 });
 
-// 页面加载时获取统计数据
 onMounted(() => {
   loadUserStats();
 });
 </script>
+
+<style scoped>
+.number-wrapper {
+  position: relative;
+  height: 2rem;
+  overflow: hidden;
+  display: inline-block;
+  min-width: 1.5rem;
+}
+
+.number-animate-up,
+.number-animate-down {
+  position: relative;
+  display: inline-block;
+  visibility: hidden;
+}
+
+.number-animate-up::before,
+.number-animate-down::before,
+.number-animate-up::after,
+.number-animate-down::after {
+  visibility: visible;
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.number-animate-up::before {
+  content: attr(data-old);
+  transform-origin: 50% 100%;
+  animation: moveUpOut 0.3s ease-in-out forwards;
+}
+
+.number-animate-up::after {
+  content: attr(data-new);
+  transform-origin: 50% 0%;
+  animation: moveUpIn 0.3s ease-in-out forwards;
+}
+
+.number-animate-down::before {
+  content: attr(data-old);
+  transform-origin: 50% 0%;
+  animation: moveDownOut 0.3s ease-in-out forwards;
+}
+
+.number-animate-down::after {
+  content: attr(data-new);
+  transform-origin: 50% 100%;
+  animation: moveDownIn 0.3s ease-in-out forwards;
+}
+
+@keyframes moveUpOut {
+  0% {
+    transform: translateY(0) rotateX(0);
+  }
+  100% {
+    transform: translateY(-50%) rotateX(-90deg);
+  }
+}
+
+@keyframes moveUpIn {
+  0% {
+    transform: translateY(50%) rotateX(90deg);
+  }
+  100% {
+    transform: translateY(0) rotateX(0);
+  }
+}
+
+@keyframes moveDownOut {
+  0% {
+    transform: translateY(0) rotateX(0);
+  }
+  100% {
+    transform: translateY(50%) rotateX(90deg);
+  }
+}
+
+@keyframes moveDownIn {
+  0% {
+    transform: translateY(-50%) rotateX(-90deg);
+  }
+  100% {
+    transform: translateY(0) rotateX(0);
+  }
+}
+</style>

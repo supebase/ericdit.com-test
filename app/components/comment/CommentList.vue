@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="select-none">
     <hr class="my-6" />
     <div
-      class="flex items-center text-base font-semibold mb-4 space-x-2"
+      class="flex items-center text-base text-neutral-400 font-semibold mb-4 space-x-2"
       v-if="allowComments">
       <div>评论</div>
-      <div class="text-neutral-500 text-base nums tabular-nums">{{ totalComments }}</div>
+      <div class="nums tabular-nums">{{ totalComments }}</div>
     </div>
 
     <div v-if="allowComments">
@@ -58,8 +58,11 @@
       </div>
       <div
         v-else
-        class="text-center text-neutral-500 text-sm my-8">
-        评论区空空如也，快来留下足迹！
+        class="flex flex-col items-center space-y-3 my-8">
+        <UIcon
+          name="hugeicons:comment-02"
+          class="size-9 text-neutral-700/80" />
+        <div class="text-sm text-neutral-500">评论区空空如也，快来留下足迹。</div>
       </div>
     </template>
   </div>

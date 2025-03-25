@@ -97,6 +97,8 @@ export const useAuth = () => {
           location,
         })
       );
+
+      await refreshUser();
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "更新用户地理位置失败");
     }
@@ -112,7 +114,10 @@ export const useAuth = () => {
       const response = await $directus.request<User.Profile>($user.readMe());
       user.value = response;
     } catch (error: any) {
-      user.value = null;
+      // 只在认证失败（401）或权限不足（403）时清除用户状态
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        user.value = null;
+      }
       throw new Error(error.errors?.[0]?.message || "获取用户信息失败");
     }
   };

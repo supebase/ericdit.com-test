@@ -25,6 +25,10 @@ export const useLocationIP = async () => {
       ip: data.ipinfo.text,
       location: data.ipdata.info1,
     };
-  } finally {
+  } catch (error) {
+    return {
+      ip: "无",
+      location: "地球",
+    };
   }
 };

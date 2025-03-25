@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="select-none">
     <div class="flex items-center my-6">
       <USeparator>
         <div class="text-neutral-600 text-base nums tabular-nums">我的收藏</div>

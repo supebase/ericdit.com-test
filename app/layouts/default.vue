@@ -32,7 +32,7 @@
       <slot />
     </main>
 
-    <footer class="container mx-auto py-4">
+    <footer class="container mx-auto py-4 select-none">
       <div class="text-center text-sm text-neutral-600 uppercase">
         &copy; 2001-{{ new Date().getFullYear() }} - Created by Eric
       </div>

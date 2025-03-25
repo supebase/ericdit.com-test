@@ -4,7 +4,9 @@
       name="svg-spinners:ring-resize"
       class="size-6 text-neutral-500" />
   </div>
-  <div v-else>
+  <div
+    v-else
+    class="select-none">
     <UChip
       :show="bookmarksCount !== null && bookmarksCount > 0"
       :color="bookmarksCount ? 'warning' : 'neutral'"

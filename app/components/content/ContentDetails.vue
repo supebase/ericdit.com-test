@@ -1,7 +1,7 @@
 <template>
   <article class="py-3 space-y-5">
     <div class="text-xl font-bold">{{ content.title }}</div>
-    <div class="flex justify-between items-center text-sm text-neutral-500">
+    <div class="flex justify-between items-center text-sm text-neutral-500 select-none">
       <div class="flex items-center space-x-3">
         <UAvatar
           :src="useAssets(content.user_created.avatar) || undefined"
@@ -33,7 +33,7 @@
       </template>
     </Suspense>
 
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center select-none">
       <CommonLikeButton
         :content-id="content.id"
         :icon-size="20" />

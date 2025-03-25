@@ -20,6 +20,8 @@
         :content="content" />
       <div v-if="contents?.length === 0">暂无内容</div>
     </template>
+
+    <hr class="my-5" />
   </div>
 </template>
 

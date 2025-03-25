@@ -99,4 +99,15 @@ onMounted(async () => {
 
   await fetchBookmarkStatus();
 });
+
+watch(isAuthenticated, (newValue) => {
+  if (!newValue) {
+    // 用户退出时重置状态
+    isBookmarked.value = false;
+    currentBookmarkId.value = null;
+  } else {
+    // 用户登录时重新获取状态
+    fetchBookmarkStatus();
+  }
+});
 </script>

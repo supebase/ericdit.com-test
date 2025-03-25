@@ -34,7 +34,7 @@
           <button
             @click="toggleReplyInput"
             class="text-sm text-neutral-500 nums tabular-nums cursor-pointer">
-            {{ replyCount > 0 ? `回复（${replyCount} 人回应）` : "回复" }}
+            {{ replyCount > 0 ? `${replyCount} 条回复` : "回复" }}
           </button>
           <button
             v-if="showReplyInput"
@@ -63,6 +63,7 @@
 
 <script setup lang="ts">
 import type { Comments } from "~/types";
+const { isAuthenticated } = useAuth();
 
 const props = defineProps<{
   comment: Comments.Item;
@@ -83,6 +84,8 @@ const refreshReplies = async () => {
 };
 
 const toggleReplyInput = () => {
+  if (!isAuthenticated.value) return;
+
   if (!showReplyInput.value) {
     emit("reply-start");
   }
