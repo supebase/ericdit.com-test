@@ -1,5 +1,5 @@
 <template>
-  <div class="reply-list ml-8 mt-2 space-y-2">
+  <div class="space-y-6 my-8 ml-10">
     <CommentReplyItem
       v-for="reply in displayReplies"
       :key="reply.id"
@@ -9,9 +9,9 @@
       v-if="replies.length > 2"
       class="text-sm">
       <button
-        class="text-gray-500 hover:text-gray-700"
+        class="text-neutral-500 nums tabular-nums cursor-pointer"
         @click="toggleExpand">
-        {{ isExpanded ? "收起回复" : `更多回复 (${replies.length - 2})` }}
+        {{ isExpanded ? "收起回复" : `查看全部回复` }}
       </button>
     </div>
   </div>

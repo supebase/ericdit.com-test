@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-end items-center space-x-2 w-1/4">
+  <div class="flex justify-end items-center space-x-2">
     <UIcon
       :name="
         !allowComments

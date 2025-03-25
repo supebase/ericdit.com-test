@@ -29,8 +29,8 @@
             class="rounded-lg aspect-[calc(4*3+1)/8] object-cover" />
         </UCarousel>
       </div>
-      <div class="flex items-center">
-        <div class="flex items-center space-x-2 w-1/4">
+      <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-2">
           <UAvatar
             :src="useAssets(content.user_created.avatar) || undefined"
             size="xs" />
@@ -38,6 +38,7 @@
             {{ useDatetime(content.date_created) }}
           </div>
         </div>
+
         <CommonCommentsCounter
           :content-id="content.id"
           :allow-comments="content.allow_comments"

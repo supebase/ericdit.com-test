@@ -2,19 +2,24 @@
   <div class="container">
     <div
       v-if="status === 'pending' && !content"
-      class="loading flex items-center justify-center py-8">
-      <span class="loading-indicator">加载中...</span>
+      class="fixed inset-0 flex justify-center items-center">
+      <UIcon
+        name="svg-spinners:ring-resize"
+        class="size-7 text-primary-500" />
     </div>
     <div
       v-else-if="error"
-      class="error bg-red-50 text-red-500 p-4 rounded">
-      {{ error.message || "加载失败，请稍后重试" }}
+      class="flex items-center justify-center min-h-[50vh]">
+      <UAlert
+        color="error"
+        variant="soft"
+        icon="hugeicons:alert-02"
+        :description="error?.message || '加载失败，请稍后重试'">
+      </UAlert>
     </div>
     <ContentDetails
       v-else-if="content"
       :content="content" />
-
-    <!-- 添加评论列表组件 -->
     <CommentList
       v-if="content"
       :content-id="content.id"
@@ -26,7 +31,14 @@
 const route = useRoute();
 const { getContent } = useContents();
 
-const CONTENT_FIELDS = ["id", "title", "body", "allow_comments", "date_created"] as const;
+const CONTENT_FIELDS = [
+  "id",
+  "title",
+  "body",
+  "allow_comments",
+  "user_created.*",
+  "date_created",
+] as const;
 
 const {
   data: content,

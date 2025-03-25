@@ -148,3 +148,32 @@ html {
 .nums {
   font-family: "Inter";
 }
+
+.mdc-prose {
+  @apply prose-img:rounded-lg 
+         prose-pre:rounded-lg 
+         prose-pre:bg-neutral-100/80 
+         dark:prose-pre:bg-neutral-950/60 
+         prose-code:text-[0.8rem] 
+         prose-code:leading-[1.3rem] 
+         prose-a:text-primary-500 
+         prose-h3:prose-a:text-neutral-600 
+         dark:prose-h3:prose-a:text-neutral-300 
+         prose-h4:prose-a:text-neutral-600 
+         dark:prose-h4:prose-a:text-neutral-300;
+}
+
+textarea {
+  resize: none;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    rgba(113, 113, 122, 0),
+    rgba(113, 113, 122, 0.25),
+    rgba(113, 113, 122, 0)
+  );
+}

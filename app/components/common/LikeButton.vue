@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-end items-center w-1/4">
+  <div class="flex justify-end items-center">
     <button
       @click="handleLike"
       :disabled="!isAuthenticated || isProcessing"
