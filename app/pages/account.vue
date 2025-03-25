@@ -2,10 +2,18 @@
   <div class="container mx-auto py-8">
     <div class="rounded-lg shadow py-6">
       <div class="flex items-center gap-4 mb-8">
-        <div class="flex items-center justify-center">
+        <div
+          class="flex items-center justify-center relative cursor-pointer group"
+          @click="handleAvatarUpload">
           <UAvatar
             :src="useAssets(user?.avatar || '')"
             size="3xl" />
+          <div
+            class="absolute -bottom-1 -right-1 bg-neutral-900 size-5 rounded-full flex items-center justify-center">
+            <UIcon
+              name="hugeicons:upload-circle-01"
+              class="size-4 text-neutral-500" />
+          </div>
         </div>
         <div class="w-full">
           <div class="text-2xl font-bold">{{ user?.first_name }}</div>
@@ -78,6 +86,12 @@ const loadUserStats = async () => {
   } finally {
     isStatsLoading.value = false;
   }
+};
+
+// 处理头像上传
+const handleAvatarUpload = () => {
+  // TODO: 实现头像上传逻辑
+  console.log("上传头像");
 };
 
 // 退出登录
