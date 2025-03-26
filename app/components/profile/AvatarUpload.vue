@@ -31,7 +31,7 @@ interface AvatarData {
 }
 
 const { user } = useAuth();
-const { avatarUrl, isLoading, uploadAvatar } = useAvatar() as AvatarData;
+const { avatarUrl, isLoading, uploadAvatar } = useProfileAvatar() as AvatarData;
 const toast = useToast();
 
 const fileInput = ref<HTMLInputElement | null>(null);

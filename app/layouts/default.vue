@@ -8,22 +8,22 @@
           <div
             v-if="$route.path === '/'"
             key="logo">
-            <CommonLogo />
+            <SharedNavigationLogo />
           </div>
           <div
             v-else
             key="icon"
             @click="$router.push('/')"
             class="cursor-pointer">
-            <CommonBack />
+            <SharedNavigationBack />
           </div>
         </Transition>
         <div class="flex items-center space-x-8">
-          <CommonBookmarkCounter
+          <SharedBookmarkCounter
             v-if="isAuthenticated"
             class="translate-y-1.5" />
 
-          <AuthStatus />
+          <AuthUserStatus />
         </div>
       </div>
     </header>

@@ -19,14 +19,14 @@
           <div class="flex justify-between items-center">
             <div class="flex items-center gap-3">
               <div class="font-medium">{{ comment.user_created.first_name }}</div>
-              <div class="text-sm text-neutral-500">{{ useDatetime(comment.date_created) }}</div>
+              <div class="text-sm text-neutral-500">{{ useDateFormatter(comment.date_created) }}</div>
               <div class="text-sm text-neutral-500">&bull;</div>
               <div class="text-sm text-neutral-500">
                 {{ comment.user_created.location }}
               </div>
             </div>
 
-            <CommonLikeButton
+            <SharedLikeButton
               :comment-id="comment.id"
               :icon-size="18" />
           </div>
@@ -60,14 +60,14 @@
           : 'scale-0 opacity-0 max-h-0 overflow-hidden'
       ">
       <div class="ml-10">
-        <CommentForm
+        <CommentEditor
           :placeholder="`回复：${comment.user_created.first_name}`"
           :is-submitting="isSubmitting"
           @submit="handleSubmit" />
       </div>
     </div>
 
-    <CommentReplyList
+    <CommentReplyThread
       ref="replyListRef"
       :comment-id="comment.id" />
   </div>
@@ -129,7 +129,7 @@ defineExpose({
   comment: props.comment,
 });
 
-const { checkUserStatus, subscribeUserStatus, cleanup, usersStatus } = useUserStatus() as {
+const { checkUserStatus, subscribeUserStatus, cleanup, usersStatus } = usePresence() as {
   checkUserStatus: (userId: string) => Promise<boolean>;
   subscribeUserStatus: (userId: string) => Promise<void>;
   cleanup: () => void;

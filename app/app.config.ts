@@ -9,7 +9,7 @@ export default defineAppConfig({
     // 颜色主题配置
     colors: {
       primary: "emerald", // 主要颜色：翠绿色
-      neutral: "stone", // 中性色：石灰色
+      neutral: "zinc", // 中性色：石灰色
     },
     // 图标配置
     icons: {

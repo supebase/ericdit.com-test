@@ -55,18 +55,18 @@
           :src="useAssets(content.user_created.avatar) || undefined"
           size="xs" />
         <div class="text-sm text-neutral-400 nums">
-          {{ useDatetime(content.date_created) }}
+          {{ useDateFormatter(content.date_created) }}
         </div>
       </div>
 
-      <CommonCommentsCounter
+      <SharedCommentCounter
         :content-id="content.id"
         :allow-comments="content.allow_comments"
         :icon-size="18" />
-      <CommonLikeButton
+      <SharedLikeButton
         :content-id="content.id"
         :icon-size="18" />
-      <CommonBookmarkButton
+      <SharedBookmarkButton
         :content-id="content.id"
         :icon-size="18" />
     </div>

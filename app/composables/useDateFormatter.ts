@@ -62,7 +62,7 @@ const messages: UseTimeAgoMessages = {
  * console.log(formattedDate.value) // 输出：x天前
  * ```
  */
-export function useDatetime(date: string | Date | number | null): ComputedRef<string> {
+export function useDateFormatter(date: string | Date | number | null): ComputedRef<string> {
   return computed(() => {
     if (!date) return messages.invalid;
 

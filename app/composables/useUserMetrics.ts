@@ -8,7 +8,7 @@ interface UserStatsReturn {
  * 用户统计数据组合式函数
  * 提供用户评论数和点赞数的统计功能
  */
-export const useUserStats = (): UserStatsReturn => {
+export const useUserMetrics = (): UserStatsReturn => {
   const { $directus, $content } = useNuxtApp();
   const { getLikes } = useLikes();
 

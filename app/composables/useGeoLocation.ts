@@ -7,7 +7,7 @@ interface IPResponse {
   };
 }
 
-export const useLocationIP = async () => {
+export const useGeoLocation = async () => {
   try {
     const data = await $fetch<IPResponse>("https://api.vore.top/api/IPdata", {
       timeout: 5000,

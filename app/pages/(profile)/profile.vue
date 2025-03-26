@@ -2,7 +2,7 @@
   <div class="container mx-auto py-8 select-none">
     <div class="rounded-lg shadow py-6">
       <div class="flex items-center gap-4 mb-8">
-        <UserAvatar />
+        <ProfileAvatarUpload />
         <div class="w-full">
           <div class="text-2xl font-bold">{{ user?.first_name }}</div>
           <div class="text-neutral-500 flex justify-between items-center">
@@ -72,7 +72,7 @@ definePageMeta({
 });
 
 const { user, logout } = useAuth();
-const { commentsCount, likesCount, fetchStats } = useUserStats();
+const { commentsCount, likesCount, fetchStats } = useUserMetrics();
 const toast = useToast();
 
 const isLoading = ref(false);

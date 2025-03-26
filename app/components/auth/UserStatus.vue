@@ -2,7 +2,7 @@
   <div class="flex items-center">
     <template v-if="isAuthenticated">
       <div class="flex items-center">
-        <NuxtLink to="/account">
+        <NuxtLink to="/profile">
           <UAvatar
             :src="useAssets(user?.avatar || '')"
             :alt="!user?.avatar ? user?.first_name : undefined"

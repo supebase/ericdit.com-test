@@ -85,7 +85,7 @@ export const useAuth = () => {
    */
   const updateUserLocation = async (): Promise<void> => {
     try {
-      const { location } = await useLocationIP();
+      const { location } = await useGeoLocation();
       const user = await $authClient.request(
         $user.readMe({
           fields: ["id"],

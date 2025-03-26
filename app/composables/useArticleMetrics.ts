@@ -29,7 +29,7 @@ const READ_SPEED_CONFIG = {
  * @param images - 文章关联的图片元数据数组
  * @returns 预计阅读时间（分钟）
  */
-export const useReadingTime = (content: string, images?: Array<ImageMeta>): string => {
+export const useArticleMetrics = (content: string, images?: Array<ImageMeta>): string => {
   /**
    * 计算代码块阅读时间
    * @param content - 文章内容

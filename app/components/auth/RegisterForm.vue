@@ -32,7 +32,7 @@
     </div>
 
     <div class="form-group">
-      <AuthPasswordInput
+      <AuthSecurityInput
         v-model="password"
         placeholder="输入密码"
         icon="hugeicons:square-lock-add-02"
@@ -40,7 +40,7 @@
     </div>
 
     <div class="form-group">
-      <AuthPasswordInput
+      <AuthSecurityInput
         v-model="password_confirm"
         placeholder="确认密码"
         icon="hugeicons:square-lock-check-02"

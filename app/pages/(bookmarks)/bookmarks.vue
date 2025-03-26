@@ -38,7 +38,7 @@
         </NuxtLink>
 
         <div class="flex items-center justify-between">
-          <div class="text-sm text-neutral-500">{{ useDatetime(bookmark.date_created) }}收藏</div>
+          <div class="text-sm text-neutral-500">{{ useDateFormatter(bookmark.date_created) }}收藏</div>
           <UButton
             icon="hugeicons:bookmark-minus-02"
             color="error"

@@ -20,7 +20,7 @@
     <ContentDetails
       v-else-if="content"
       :content="content" />
-    <CommentList
+    <CommentThread
       v-if="content"
       :content-id="content.id"
       :allow-comments="content.allow_comments" />

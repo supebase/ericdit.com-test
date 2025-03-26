@@ -11,10 +11,10 @@
         </div>
         <div>&bull;</div>
         <div>
-          {{ useDatetime(content.date_created) }}
+          {{ useDateFormatter(content.date_created) }}
         </div>
       </div>
-      <div>阅读约需 {{ useReadingTime(content.body) }}</div>
+      <div>阅读约需 {{ useArticleMetrics(content.body) }}</div>
     </div>
 
     <Suspense>
@@ -34,7 +34,7 @@
     </Suspense>
 
     <div class="flex justify-between items-center select-none">
-      <CommonLikeButton
+      <SharedLikeButton
         :content-id="content.id"
         :icon-size="20" />
       <div class="flex items-center space-x-6">
@@ -42,7 +42,7 @@
           name="hugeicons:share-05"
           class="size-5 text-neutral-400 cursor-pointer"
           @click="shareButton(content.title, getPreviewText(content.body))" />
-        <CommonBookmarkButton
+        <SharedBookmarkButton
           :content-id="content.id"
           :icon-size="20" />
       </div>

@@ -15,7 +15,7 @@ interface UserStatusComposable {
  * 提供用户在线状态的追踪、更新和订阅功能
  * @returns {Object} 用户状态管理相关的方法和状态
  */
-export const useUserStatus = (): UserStatusComposable => {
+export const usePresence = (): UserStatusComposable => {
   const { $directus, $content, $realtimeClient } = useNuxtApp();
   // 当前登录用户信息
   const user = useState<User.Profile | null>("auth:user");

@@ -9,7 +9,8 @@
       stroke="currentColor"
       stroke-linecap="round"
       stroke-linejoin="round"
-      stroke-width="1.2">
+      stroke-width="1.2"
+      class="stroke-neutral-500">
       <path
         class="circle"
         stroke-dasharray="64"

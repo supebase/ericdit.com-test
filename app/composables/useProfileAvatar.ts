@@ -7,7 +7,7 @@ import type { User } from "~/types";
  * - isLoading: 上传状态标志
  * - uploadAvatar: 头像上传方法
  */
-export const useAvatar = (): object => {
+export const useProfileAvatar = (): object => {
   // 注入必要的依赖
   const { $authClient, $file, $user } = useNuxtApp();
   const { user } = useAuth();

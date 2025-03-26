@@ -13,7 +13,7 @@ const appConfig = useAppConfig();
 
 // 导入认证和用户状态相关的组合式函数
 const { refreshUser, isAuthenticated } = useAuth();
-const { updateLastActivity, updateUserStatus, cleanup } = useUserStatus();
+const { updateLastActivity, updateUserStatus, cleanup } = usePresence();
 
 // 用户活动监听相关配置
 const USER_ACTIVITY_EVENTS = ["mousedown", "keydown", "scroll", "touchstart"] as const;

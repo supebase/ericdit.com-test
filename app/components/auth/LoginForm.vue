@@ -16,7 +16,7 @@
     </div>
 
     <div class="form-group">
-      <AuthPasswordInput
+      <AuthSecurityInput
         v-model="password"
         placeholder="登录密码"
         icon="hugeicons:lock-key"

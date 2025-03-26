@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div v-if="isLoading && !contents">
-      <SkeletonHome />
+      <LoadersHomePageSkeleton />
     </div>
     <div
       v-else-if="error"
@@ -14,7 +14,7 @@
       </UAlert>
     </div>
     <template v-else>
-      <ContentItem
+      <ContentCard
         v-for="content in contents"
         :key="content.id"
         :content="content" />

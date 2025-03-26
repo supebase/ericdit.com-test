@@ -17,7 +17,7 @@
       :placeholder="isAuthenticated ? placeholder : '请先登录后再发表评论'" />
     <div class="flex justify-between items-center px-3">
       <div class="flex items-center space-x-4">
-        <EmojiPicker
+        <ReactionsEmojiSelector
           @emoji="insertEmoji"
           v-if="isAuthenticated" />
         <UBadge

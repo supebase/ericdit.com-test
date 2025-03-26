@@ -18,7 +18,7 @@
             : '-translate-y-4 opacity-0 max-h-0 overflow-hidden'
         ">
         <div class="animate-in slide-in-from-left duration-700">
-          <CommentForm
+          <CommentEditor
             :is-submitting="isSubmitting"
             :placeholder="randomPlaceholder"
             @submit="handleSubmit" />
@@ -56,7 +56,7 @@
       <div
         v-if="rootComments.length || !allowComments"
         class="space-y-6 my-8">
-        <CommentItem
+        <CommentThreadItem
           v-for="comment in rootComments"
           :key="comment.id"
           :comment="comment"
