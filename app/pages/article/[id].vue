@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
 const route = useRoute();
-const { getContent } = useContents();
+const { getContent, subscribeContents } = useContents();
 
 const CONTENT_FIELDS = [
   "id",
@@ -42,6 +42,7 @@ const CONTENT_FIELDS = [
 
 const {
   data: content,
+  refresh,
   status,
   error,
 } = await useLazyAsyncData(`content-${route.params.id}`, () =>
@@ -49,4 +50,17 @@ const {
     fields: [...CONTENT_FIELDS],
   })
 );
+
+onMounted(() => {
+  subscribeContents(
+    {
+      fields: [...CONTENT_FIELDS],
+    },
+    async (event) => {
+      if (["update"].includes(event.event)) {
+        await refresh();
+      }
+    }
+  );
+});
 </script>

@@ -68,6 +68,9 @@ export default defineNuxtConfig({
   },
 
   mdc: {
+    headings: {
+      anchorLinks: false,
+    },
     highlight: {
       theme: {
         default: "github-light",
