@@ -1,11 +1,21 @@
 import type { User } from "~/types";
 
+// 添加返回类型接口
+interface UserStatusComposable {
+  usersStatus: Ref<Record<string, boolean>>;
+  updateUserStatus: (status: boolean) => Promise<void>;
+  checkUserStatus: (userId: string) => Promise<boolean>;
+  updateLastActivity: () => void;
+  subscribeUserStatus: (userId: string) => Promise<(() => void) | undefined>;
+  cleanup: () => void;
+}
+
 /**
  * 用户状态管理组合式函数
  * 提供用户在线状态的追踪、更新和订阅功能
  * @returns {Object} 用户状态管理相关的方法和状态
  */
-export const useUserStatus = (): object => {
+export const useUserStatus = (): UserStatusComposable => {
   const { $directus, $content, $realtimeClient } = useNuxtApp();
   // 当前登录用户信息
   const user = useState<User.Profile | null>("auth:user");

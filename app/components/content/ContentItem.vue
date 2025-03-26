@@ -1,9 +1,8 @@
 <template>
   <article class="py-4 select-none">
-    <div class="space-y-4">
-      <NuxtLink :to="`/article/${content.id}`">
-        <div class="text-lg mb-2">{{ content.title }}</div>
-      </NuxtLink>
+    <NuxtLink :to="`/article/${content.id}`">
+      <div class="text-lg mb-2">{{ content.title }}</div>
+
       <div
         v-if="content.images.length === 1"
         class="relative">
@@ -49,27 +48,27 @@
           </div>
         </UCarousel>
       </div>
-      <div class="flex justify-between items-center">
-        <div class="flex items-center space-x-2">
-          <UAvatar
-            :src="useAssets(content.user_created.avatar) || undefined"
-            size="xs" />
-          <div class="text-sm text-neutral-400 nums">
-            {{ useDatetime(content.date_created) }}
-          </div>
+    </NuxtLink>
+    <div class="flex justify-between items-center mt-4">
+      <div class="flex items-center space-x-2">
+        <UAvatar
+          :src="useAssets(content.user_created.avatar) || undefined"
+          size="xs" />
+        <div class="text-sm text-neutral-400 nums">
+          {{ useDatetime(content.date_created) }}
         </div>
-
-        <CommonCommentsCounter
-          :content-id="content.id"
-          :allow-comments="content.allow_comments"
-          :icon-size="18" />
-        <CommonLikeButton
-          :content-id="content.id"
-          :icon-size="18" />
-        <CommonBookmarkButton
-          :content-id="content.id"
-          :icon-size="18" />
       </div>
+
+      <CommonCommentsCounter
+        :content-id="content.id"
+        :allow-comments="content.allow_comments"
+        :icon-size="18" />
+      <CommonLikeButton
+        :content-id="content.id"
+        :icon-size="18" />
+      <CommonBookmarkButton
+        :content-id="content.id"
+        :icon-size="18" />
     </div>
   </article>
 </template>

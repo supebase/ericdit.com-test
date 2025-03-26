@@ -37,7 +37,18 @@
           </h2>
         </NuxtLink>
 
-        <div class="text-sm text-neutral-500">{{ useDatetime(bookmark.date_created) }}收藏</div>
+        <div class="flex items-center justify-between">
+          <div class="text-sm text-neutral-500">{{ useDatetime(bookmark.date_created) }}收藏</div>
+          <UButton
+            icon="hugeicons:bookmark-minus-02"
+            color="error"
+            variant="link"
+            size="xs"
+            class="cursor-pointer size-5"
+            :loading="bookmark.isDeleting"
+            :disabled="bookmark.isDeleting"
+            @click="removeBookmark(bookmark)" />
+        </div>
       </UCard>
     </div>
   </div>
@@ -48,7 +59,7 @@ definePageMeta({
   middleware: ["auth"],
 });
 
-const { getBookmarks, subscribeBookmarks } = useBookmarks();
+const { getBookmarks, deleteBookmark, subscribeBookmarks } = useBookmarks();
 const bookmarks = ref<any[]>([]);
 const bookmarksCount = ref(0);
 const loading = ref(true);
@@ -65,6 +76,19 @@ const fetchBookmarks = async () => {
     console.error("Failed to fetch bookmarks:", error);
   } finally {
     loading.value = false;
+  }
+};
+
+const removeBookmark = async (bookmark: any) => {
+  bookmark.isDeleting = true;
+  try {
+    await deleteBookmark(bookmark.id);
+    // 立即从本地列表中移除
+    bookmarks.value = bookmarks.value.filter((b) => b.id !== bookmark.id);
+    bookmarksCount.value = bookmarks.value.length;
+  } catch (error) {
+    console.error("Failed to remove bookmark:", error);
+    bookmark.isDeleting = false;
   }
 };
 

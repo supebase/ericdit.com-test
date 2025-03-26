@@ -28,31 +28,40 @@
             :icon-size="18" />
         </div>
 
-        <div class="mt-1">{{ comment.comment }}</div>
+        <div
+          class="my-1 cursor-pointer"
+          @click="toggleReplyInput">
+          {{ comment.comment }}
+        </div>
 
-        <div class="mt-1.5 flex justify-between items-center gap-4">
+        <div class="flex justify-between items-center space-y-4">
           <button
             @click="toggleReplyInput"
             class="text-sm text-neutral-500 nums tabular-nums cursor-pointer">
             {{ replyCount > 0 ? `${replyCount} 条回复` : "回复" }}
           </button>
-          <button
-            v-if="showReplyInput"
+          <UIcon
+            v-if="isReplying"
             @click="cancelReply"
-            class="text-sm text-orange-500 cursor-pointer">
-            取消回复
-          </button>
+            name="hugeicons:cancel-circle-half-dot"
+            class="size-5 text-neutral-500 cursor-pointer mb-2" />
         </div>
       </div>
     </div>
 
     <div
-      v-if="showReplyInput"
-      class="mt-5 ml-10">
-      <CommentForm
-        :placeholder="`回复：${comment.user_created.first_name}`"
-        :is-submitting="isSubmitting"
-        @submit="handleSubmit" />
+      class="ml-10 transform transition-all duration-500 ease-in-out"
+      :class="
+        isReplying
+          ? 'translate-y-0 opacity-100 max-h-[500px]'
+          : '-translate-y-4 opacity-0 max-h-0 overflow-hidden'
+      ">
+      <div class="animate-in slide-in-from-right duration-500">
+        <CommentForm
+          :placeholder="`回复：${comment.user_created.first_name}`"
+          :is-submitting="isSubmitting"
+          @submit="handleSubmit" />
+      </div>
     </div>
 
     <CommentReplyList
@@ -67,6 +76,7 @@ const { isAuthenticated } = useAuth();
 
 const props = defineProps<{
   comment: Comments.Item;
+  isReplying: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -75,7 +85,6 @@ const emit = defineEmits<{
   (e: "reply-end"): void;
 }>();
 
-const showReplyInput = ref(false);
 const isSubmitting = ref(false);
 const replyListRef = ref();
 
@@ -86,14 +95,14 @@ const refreshReplies = async () => {
 const toggleReplyInput = () => {
   if (!isAuthenticated.value) return;
 
-  if (!showReplyInput.value) {
+  if (!props.isReplying) {
     emit("reply-start");
+  } else {
+    emit("reply-end");
   }
-  showReplyInput.value = !showReplyInput.value;
 };
 
 const cancelReply = () => {
-  showReplyInput.value = false;
   emit("reply-end");
 };
 
@@ -106,7 +115,6 @@ const handleSubmit = async (content: string) => {
     });
   } finally {
     isSubmitting.value = false;
-    showReplyInput.value = false;
     emit("reply-end");
   }
 };
@@ -146,6 +154,6 @@ onUnmounted(() => {
 });
 
 onDeactivated(() => {
-  cancelReply();
+  emit("reply-end");
 });
 </script>

@@ -9,11 +9,20 @@
     </div>
 
     <div v-if="allowComments">
-      <div v-if="isAuthenticated && showMainCommentForm">
-        <CommentForm
-          :is-submitting="isSubmitting"
-          :placeholder="randomPlaceholder"
-          @submit="handleSubmit" />
+      <div
+        v-if="isAuthenticated"
+        class="transform transition-all duration-500 ease-in-out"
+        :class="
+          showMainCommentForm
+            ? 'translate-y-0 opacity-100 max-h-[500px]'
+            : '-translate-y-4 opacity-0 max-h-0 overflow-hidden'
+        ">
+        <div class="animate-in slide-in-from-left duration-500">
+          <CommentForm
+            :is-submitting="isSubmitting"
+            :placeholder="randomPlaceholder"
+            @submit="handleSubmit" />
+        </div>
       </div>
     </div>
 
@@ -51,9 +60,10 @@
           v-for="comment in rootComments"
           :key="comment.id"
           :comment="comment"
+          :is-replying="activeReplyId === comment.id"
           @reply="handleReply"
-          @reply-start="hideMainCommentForm"
-          @reply-end="toggleMainCommentFormShow"
+          @reply-start="handleReplyStart(comment.id)"
+          @reply-end="handleReplyEnd"
           :ref="(el) => setCommentRef(comment.id, el)" />
       </div>
       <div
@@ -85,6 +95,7 @@ const toast = useToast();
 
 const isSubmitting = ref(false);
 const showMainCommentForm = ref(true);
+const activeReplyId = ref<string | null>(null);
 const commentRefs = ref<Record<string, { refreshReplies: () => Promise<void> }>>({});
 
 const {
@@ -118,6 +129,16 @@ const hideMainCommentForm = () => {
 
 const toggleMainCommentFormShow = () => {
   showMainCommentForm.value = true;
+};
+
+const handleReplyStart = (commentId: string) => {
+  activeReplyId.value = commentId;
+  hideMainCommentForm();
+};
+
+const handleReplyEnd = () => {
+  activeReplyId.value = null;
+  toggleMainCommentFormShow();
 };
 
 const isLoading = computed(() => status.value === "pending");
@@ -192,6 +213,7 @@ const handleReply = async ({ commentId, content }: ReplyData) => {
     });
   } finally {
     isSubmitting.value = false;
+    handleReplyEnd();
   }
 };
 

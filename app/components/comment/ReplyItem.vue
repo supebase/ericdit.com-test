@@ -39,10 +39,7 @@ const props = defineProps<{
   reply: Comments.Item;
 }>();
 
-const { usersStatus, subscribeUserStatus } = useUserStatus() as {
-  usersStatus: Record<string, boolean>;
-  subscribeUserStatus: (userId: string) => Promise<void>;
-};
+const { usersStatus, subscribeUserStatus } = useUserStatus()
 
 onMounted(async () => {
   await subscribeUserStatus(props.reply.user_created.id);
