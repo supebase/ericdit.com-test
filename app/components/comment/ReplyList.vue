@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-6 my-8 ml-10">
+  <div class="space-y-6 my-6 ml-5 border-l border-dashed border-neutral-700/80">
     <div
       v-if="isLoading && !replies.length"
       class="text-center my-8 text-neutral-500">
@@ -8,7 +8,7 @@
         class="size-6 text-neutral-500" />
     </div>
 
-    <template v-else>
+    <div class="space-y-6 ml-5" v-else>
       <CommentReplyItem
         v-for="reply in displayReplies"
         :key="reply.id"
@@ -23,7 +23,7 @@
           {{ isExpanded ? "收起回复" : `查看全部回复` }}
         </button>
       </div>
-    </template>
+    </div>
   </div>
 </template>
 

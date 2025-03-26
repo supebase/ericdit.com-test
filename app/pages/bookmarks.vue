@@ -55,20 +55,27 @@
 </template>
 
 <script setup lang="ts">
+import type { Bookmarks } from "~/types";
+
 definePageMeta({
   middleware: ["auth"],
 });
 
 const { getBookmarks, deleteBookmark, subscribeBookmarks } = useBookmarks();
-const bookmarks = ref<any[]>([]);
+const { user } = useAuth();
+const bookmarks = ref<Bookmarks.Item[]>([]);
 const bookmarksCount = ref(0);
 const loading = ref(true);
 
 const fetchBookmarks = async () => {
+  loading.value = true;
   try {
     const response = await getBookmarks({
       fields: ["id", "content_id.*", "date_created"],
       sort: ["-date_created"],
+      filter: {
+        user_created: { _eq: user.value!.id },
+      },
     });
     bookmarks.value = response;
     bookmarksCount.value = response.length;
@@ -79,7 +86,7 @@ const fetchBookmarks = async () => {
   }
 };
 
-const removeBookmark = async (bookmark: any) => {
+const removeBookmark = async (bookmark: Bookmarks.Item) => {
   bookmark.isDeleting = true;
   try {
     await deleteBookmark(bookmark.id);
@@ -92,18 +99,35 @@ const removeBookmark = async (bookmark: any) => {
   }
 };
 
-onMounted(async () => {
-  subscribeBookmarks(
-    {
-      fields: ["id", "content_id.*", "date_created"],
-    },
-    async (event) => {
-      if (["create", "delete"].includes(event.event)) {
-        await fetchBookmarks();
-      }
+// 添加用户变化的监听
+watch(
+  () => user.value?.id,
+  (newUserId) => {
+    if (newUserId) {
+      fetchBookmarks();
+    } else {
+      bookmarks.value = [];
+      bookmarksCount.value = 0;
     }
-  );
+  },
+  { immediate: true }
+);
 
-  await fetchBookmarks();
+onMounted(() => {
+  if (user.value?.id) {
+    subscribeBookmarks(
+      {
+        fields: ["id", "content_id.*", "date_created"],
+        filter: {
+          user_created: { _eq: user.value.id },
+        },
+      },
+      async (event) => {
+        if (["create", "delete"].includes(event.event)) {
+          await fetchBookmarks();
+        }
+      }
+    );
+  }
 });
 </script>

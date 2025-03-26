@@ -5,7 +5,9 @@
         <NuxtLink to="/account">
           <UAvatar
             :src="useAssets(user?.avatar || '')"
-            size="lg" />
+            :alt="!user?.avatar ? user?.first_name : undefined"
+            size="lg"
+            class="uppercase" />
         </NuxtLink>
       </div>
     </template>

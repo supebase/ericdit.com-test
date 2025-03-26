@@ -11,13 +11,13 @@
     <div v-if="allowComments">
       <div
         v-if="isAuthenticated"
-        class="transform transition-all duration-500 ease-in-out"
+        class="transform transition-all duration-700 ease-in-out"
         :class="
           showMainCommentForm
             ? 'translate-y-0 opacity-100 max-h-[500px]'
             : '-translate-y-4 opacity-0 max-h-0 overflow-hidden'
         ">
-        <div class="animate-in slide-in-from-left duration-500">
+        <div class="animate-in slide-in-from-left duration-700">
           <CommentForm
             :is-submitting="isSubmitting"
             :placeholder="randomPlaceholder"

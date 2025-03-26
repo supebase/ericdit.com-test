@@ -4,7 +4,9 @@
     @click="openFileInput">
     <UAvatar
       :src="avatarUrl || ''"
-      size="3xl" />
+      :alt="!avatarUrl ? user?.first_name : undefined"
+      size="3xl"
+      class="uppercase" />
     <div
       class="absolute -bottom-1 -right-1 bg-neutral-900 size-5 rounded-full flex items-center justify-center">
       <UIcon
@@ -28,6 +30,7 @@ interface AvatarData {
   uploadAvatar: (file: File) => Promise<void>;
 }
 
+const { user } = useAuth();
 const { avatarUrl, isLoading, uploadAvatar } = useAvatar() as AvatarData;
 const toast = useToast();
 
