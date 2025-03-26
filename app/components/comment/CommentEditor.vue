@@ -1,6 +1,6 @@
 <template>
   <div
-    class="ring-2 ring-neutral-200 dark:ring-neutral-800 bg-neutral-50/60 dark:bg-neutral-950/60 rounded-lg p-1.5">
+    class="ring-2 ring-neutral-800 bg-neutral-950/60 rounded-lg p-1.5 m-1">
     <UTextarea
       ref="commentInput"
       v-model="content"
@@ -30,7 +30,7 @@
       </div>
       <div class="flex items-center space-x-6">
         <span
-          class="text-sm select-none"
+          class="text-sm nums tabular-nums select-none"
           :class="
             content.length >= COMMENT_MAX_LENGTH
               ? 'text-red-600'

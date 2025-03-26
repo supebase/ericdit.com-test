@@ -1,5 +1,5 @@
 <template>
-  <div class="space-y-6 my-6 ml-5 border-l border-dashed border-neutral-700/80">
+  <div class="space-y-6 my-6 ml-5">
     <div
       v-if="isLoading && !replies.length"
       class="text-center my-8 text-neutral-500">

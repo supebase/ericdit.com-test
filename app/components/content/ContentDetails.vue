@@ -1,7 +1,8 @@
 <template>
   <article class="py-3 space-y-5">
     <div class="text-xl font-bold">{{ content.title }}</div>
-    <div class="flex justify-between items-center text-sm text-neutral-500 select-none">
+    <div
+      class="flex justify-between items-center text-sm text-neutral-500 nums tabular-nums select-none">
       <div class="flex items-center space-x-3">
         <UAvatar
           :src="useAssets(content.user_created.avatar) || undefined"

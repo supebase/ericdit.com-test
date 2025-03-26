@@ -1,5 +1,5 @@
 <template>
-  <div class="select-none">
+  <div class="select-none pb-8">
     <hr class="my-6" />
     <div
       class="flex items-center text-base text-neutral-400 font-semibold mb-4 space-x-2"
@@ -55,7 +55,7 @@
     <template v-else>
       <div
         v-if="rootComments.length || !allowComments"
-        class="space-y-6 my-8">
+        class="my-8">
         <CommentThreadItem
           v-for="comment in rootComments"
           :key="comment.id"
@@ -65,14 +65,6 @@
           @reply-start="handleReplyStart(comment.id)"
           @reply-end="handleReplyEnd"
           :ref="(el) => setCommentRef(comment.id, el)" />
-      </div>
-      <div
-        v-else
-        class="flex flex-col items-center space-y-3 my-8">
-        <UIcon
-          name="hugeicons:comment-02"
-          class="size-9 text-neutral-700/80" />
-        <div class="text-sm text-neutral-500">评论区空空如也，快来留下足迹。</div>
       </div>
     </template>
   </div>

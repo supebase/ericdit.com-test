@@ -16,7 +16,7 @@
 
       <div class="flex-1">
         <div class="flex justify-between items-center">
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-3 nums tabular-nums">
             <div class="font-medium">{{ reply.user_created.first_name }}</div>
             <div class="text-sm text-neutral-500">{{ useDateFormatter(reply.date_created) }}</div>
             <div class="text-sm text-neutral-500">&bull;</div>
@@ -31,7 +31,7 @@
         </div>
       </div>
     </div>
-    <div class="mt-1 ml-10">{{ reply.comment }}</div>
+    <div class="ml-10">{{ reply.comment }}</div>
   </div>
 </template>
 

@@ -17,7 +17,7 @@
 
         <div class="flex-1">
           <div class="flex justify-between items-center">
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-3 nums tabular-nums">
               <div class="font-medium">{{ comment.user_created.first_name }}</div>
               <div class="text-sm text-neutral-500">{{ useDateFormatter(comment.date_created) }}</div>
               <div class="text-sm text-neutral-500">&bull;</div>
@@ -33,7 +33,7 @@
         </div>
       </div>
       <div
-        class="my-1 ml-10 cursor-pointer"
+        class="ml-10 cursor-pointer"
         @click="toggleReplyInput">
         {{ comment.comment }}
       </div>
