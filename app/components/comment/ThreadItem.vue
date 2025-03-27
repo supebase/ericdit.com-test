@@ -19,7 +19,9 @@
           <div class="flex justify-between items-center">
             <div class="flex items-center gap-3 nums tabular-nums">
               <div class="font-medium">{{ comment.user_created.first_name }}</div>
-              <div class="text-sm text-neutral-500">{{ useDateFormatter(comment.date_created) }}</div>
+              <div class="text-sm text-neutral-500">
+                {{ useDateFormatter(comment.date_created) }}
+              </div>
               <div class="text-sm text-neutral-500">&bull;</div>
               <div class="text-sm text-neutral-500">
                 {{ comment.user_created.location }}
@@ -138,16 +140,20 @@ const { checkUserStatus, subscribeUserStatus, cleanup, usersStatus } = usePresen
 const userStatus = ref(false);
 
 onMounted(async () => {
-  userStatus.value = await checkUserStatus(props.comment.user_created.id);
-
   if (import.meta.client) {
+    // 先订阅，再检查状态
     await subscribeUserStatus(props.comment.user_created.id);
+    userStatus.value = await checkUserStatus(props.comment.user_created.id);
 
     watch(
       () => usersStatus.value[props.comment.user_created.id],
       (newStatus) => {
-        userStatus.value = newStatus ?? false;
-      }
+        if (newStatus !== undefined) {
+          // 添加undefined检查
+          userStatus.value = newStatus;
+        }
+      },
+      { immediate: true } // 立即执行一次
     );
   }
 });

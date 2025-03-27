@@ -14,10 +14,12 @@
       </UAlert>
     </div>
     <template v-else>
-      <ContentCard
-        v-for="content in contents"
+      <SharedFadeIn
+        v-for="(content, index) in contents"
         :key="content.id"
-        :content="content" />
+        :delay="index * 100">
+        <ContentCard :content="content" />
+      </SharedFadeIn>
       <div v-if="contents?.length === 0">暂无内容</div>
     </template>
 

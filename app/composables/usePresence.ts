@@ -32,7 +32,7 @@ export const usePresence = (): UserStatusComposable => {
   // 用户状态相关常量
   const ACTIVITY_TIMEOUT_MS = 1000; // 用户活动防抖时间
   const OFFLINE_THRESHOLD_MINUTES = 7; // 离线判定阈值（分钟）
-  const STATUS_CHECK_INTERVAL_MS = 60000; // 状态检查间隔（毫秒）
+  const STATUS_CHECK_INTERVAL_MS = 30000; // 状态检查间隔（毫秒）
 
   /**
    * 更新用户在线状态
@@ -113,7 +113,7 @@ export const usePresence = (): UserStatusComposable => {
    * @returns {Promise<void>}
    */
   const subscribeUserStatus = async (userId: string): Promise<(() => void) | undefined> => {
-    if (usersStatus.value[userId] !== undefined) return;
+    //if (usersStatus.value[userId] !== undefined) return;
 
     try {
       const { subscription } = await $realtimeClient.subscribe("users_status", {
@@ -175,8 +175,10 @@ export const usePresence = (): UserStatusComposable => {
       clearTimeout(activityTimeout);
     }
     // 清理所有活跃的订阅
-    activeSubscriptions.forEach((cleanup) => cleanup());
-    activeSubscriptions = [];
+    while (activeSubscriptions.length) {
+      const cleanup = activeSubscriptions.pop();
+      cleanup?.();
+    }
   };
 
   return {

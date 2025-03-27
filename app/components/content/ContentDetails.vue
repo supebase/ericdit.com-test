@@ -1,5 +1,5 @@
 <template>
-  <article class="py-3 space-y-5">
+  <article class="py-4 space-y-5">
     <div class="text-xl font-bold">{{ content.title }}</div>
     <div
       class="flex justify-between items-center text-sm text-neutral-500 nums tabular-nums select-none">
@@ -15,7 +15,7 @@
           {{ useDateFormatter(content.date_created) }}
         </div>
       </div>
-      <div>阅读约需 {{ useArticleMetrics(content.body) }}</div>
+      <div>阅读约 {{ useArticleMetrics(content.body) }}</div>
     </div>
 
     <Suspense>

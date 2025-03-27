@@ -1,16 +1,12 @@
 <template>
   <div class="select-none pb-8">
-    <hr class="my-6" />
-    <div
-      class="flex items-center text-base text-neutral-400 font-semibold mb-4 space-x-2"
-      v-if="allowComments">
-      <div>评论</div>
-      <div class="nums tabular-nums">{{ totalComments }}</div>
-    </div>
+    <USeparator
+      v-if="allowComments"
+      :label="`有 ${totalComments} 条评论，快来加入讨论！`"
+      class="nums tabular-nums my-6" />
 
     <div v-if="allowComments">
       <div
-        v-if="isAuthenticated"
         class="transform transition-all duration-700 ease-in-out"
         :class="
           showMainCommentForm
@@ -71,6 +67,8 @@
 </template>
 
 <script setup lang="ts">
+import { AUTH_ERROR_MESSAGES } from "~/types/auth";
+
 interface ReplyData {
   commentId: string;
   content: string;
@@ -81,7 +79,6 @@ const props = defineProps<{
   allowComments: boolean;
 }>();
 
-const { isAuthenticated } = useAuth();
 const { getCommentsList, createComment, subscribeComments } = useComments();
 const toast = useToast();
 
@@ -165,9 +162,14 @@ const handleSubmit = async (content: string) => {
       color: "success",
     });
   } catch (error) {
+    const errorMessage =
+      error instanceof Error
+        ? AUTH_ERROR_MESSAGES[error.message] || error.message
+        : "发生错误，请稍后再试。";
+
     toast.add({
       title: "评论失败",
-      description: error instanceof Error ? error.message : "发生错误，请稍后再试。",
+      description: errorMessage,
       icon: "hugeicons:alert-02",
       color: "error",
     });
@@ -197,9 +199,14 @@ const handleReply = async ({ commentId, content }: ReplyData) => {
       color: "success",
     });
   } catch (error) {
+    const errorMessage =
+      error instanceof Error
+        ? AUTH_ERROR_MESSAGES[error.message] || error.message
+        : "发生错误，请稍后再试。";
+
     toast.add({
       title: "回复失败",
-      description: error instanceof Error ? error.message : "发生错误，请稍后再试。",
+      description: errorMessage,
       icon: "hugeicons:alert-02",
       color: "error",
     });

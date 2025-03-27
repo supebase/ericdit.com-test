@@ -49,6 +49,26 @@ export const useContents = () => {
   };
 
   /**
+   * 清理 Markdown 语法，返回纯文本
+   * @param text - 包含 Markdown 语法的文本
+   * @returns 清理后的纯文本
+   */
+  const cleanMarkdown = (text: string): string => {
+    if (!text) return "";
+
+    return text
+      .replace(/#{1,6}\s/g, "")
+      .replace(/\*\*(.+?)\*\*/g, "$1")
+      .replace(/\*(.+?)\*/g, "$1")
+      .replace(/\[(.+?)\]\(.+?\)({target=_blank})?/g, "$1") // 处理带有 target=_blank 的链接
+      .replace(/`(.+?)`/g, "$1")
+      .replace(/~~(.+?)~~/g, "$1")
+      .replace(/>\s(.+)/g, "$1")
+      .replace(/\n\s*[-*+]\s/g, "\n")
+      .replace(/\n\s*\d+\.\s/g, "\n");
+  };
+
+  /**
    * 订阅内容更新
    * @param query - 订阅查询条件，用于过滤需要监听的内容
    * @param callback - 数据变化时的回调函数
@@ -72,6 +92,7 @@ export const useContents = () => {
   return {
     getContents,
     getContent,
+    cleanMarkdown,
     subscribeContents,
   };
 };
