@@ -41,17 +41,6 @@ export default defineNuxtConfig({
       target: "esnext",
       cssCodeSplit: true,
       chunkSizeWarningLimit: 1000,
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            core: ["vue", "vue-router"],
-            directus: ["@directus/sdk"],
-            ui: ["@nuxt/ui"],
-            utils: ["@vueuse/nuxt"],
-            emoji: ["nuxt-emoji-picker"],
-          },
-        },
-      },
     },
     optimizeDeps: {
       include: ["vue", "vue-router", "@vueuse/core"],
