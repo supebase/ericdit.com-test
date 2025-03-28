@@ -5,8 +5,7 @@
     <div class="form-group">
       <UInput
         v-model="email"
-        variant="outline"
-        color="neutral"
+        variant="soft"
         size="xl"
         icon="hugeicons:at"
         class="w-full"
@@ -56,9 +55,9 @@
 <script setup lang="ts">
 import { validateEmail } from "~/utils/validation";
 import { AUTH_ERROR_MESSAGES } from "~/types/auth";
+import { safeBack } from "~/router.options";
 
 const { login, updateUserLocation } = useAuth();
-const navigateTo = useNuxtApp().$router;
 const toast = useToast();
 
 const email = ref("");
@@ -90,8 +89,15 @@ const handleSubmit = async () => {
   try {
     isSubmitting.value = true;
     await login(email.value, password.value);
-    navigateTo.back();
 
+    toast.add({
+      title: "登录提示",
+      description: "登录成功，欢迎回来。",
+      icon: "hugeicons:checkmark-circle-02",
+      color: "success",
+    });
+
+    await safeBack();
     updateUserLocation();
   } catch (error: any) {
     toast.add({

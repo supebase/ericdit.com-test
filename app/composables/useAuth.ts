@@ -48,6 +48,8 @@ export const useAuth = () => {
   const logout = async (): Promise<void> => {
     try {
       await $authClient.logout();
+      // 清除存储的原始路径
+      localStorage.removeItem("originalPath");
       user.value = null;
     } catch (error: any) {
       throw new Error(error.errors?.[0]?.message || "登出失败");

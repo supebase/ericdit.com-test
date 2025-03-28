@@ -1,8 +1,7 @@
 <template>
   <UInput
     :model-value="modelValue"
-    variant="outline"
-    color="neutral"
+    variant="soft"
     size="xl"
     :icon="icon"
     class="w-full"

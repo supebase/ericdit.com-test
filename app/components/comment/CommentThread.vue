@@ -1,9 +1,10 @@
 <template>
   <div class="select-none pb-8">
     <USeparator v-if="allowComments">
-      <span class="text-neutral-600 text-sm nums tabular-nums my-6">
-        有 {{ totalComments }} 条评论，快来加入讨论！
-      </span>
+      <div class="text-neutral-600 text-sm nums tabular-nums my-6">
+        <span v-if="totalComments"> 有 {{ totalComments }} 条评论，快来加入讨论！ </span>
+        <span v-else> 暂无评论，快来发表你的观点吧！ </span>
+      </div>
     </USeparator>
 
     <div v-if="allowComments">
@@ -28,7 +29,7 @@
       color="info"
       variant="soft"
       icon="hugeicons:comment-block-02"
-      description="评论功能已关闭"
+      description="本页面评论功能已关闭。"
       class="my-8">
     </UAlert>
 

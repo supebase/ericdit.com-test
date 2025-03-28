@@ -14,7 +14,23 @@
         v-else
         :name="isLiked ? 'hugeicons:heart-check' : 'hugeicons:favourite'"
         :size="iconSize" />
-      <span class="nums tabular-nums">{{ likesCount }}</span>
+      <div class="flex items-center tabular-nums">
+        <div
+          v-for="(digit, index) in displayDigits"
+          :key="index"
+          class="number-column">
+          <div
+            class="number-scroll"
+            :style="{ transform: `translateY(${digit * -10}%)` }">
+            <div
+              v-for="n in 10"
+              :key="n"
+              class="number-cell">
+              {{ n - 1 }}
+            </div>
+          </div>
+        </div>
+      </div>
     </button>
   </div>
 </template>
@@ -34,7 +50,11 @@ const likesCount = ref(0);
 const currentLikeId = ref<string | null>(null);
 const isProcessing = ref(false);
 
-// 获取当前内容的点赞状态
+// 将数字转换为数字数组
+const displayDigits = computed(() => {
+  return String(likesCount.value).padStart(1, "0").split("").map(Number);
+});
+
 const fetchLikes = async () => {
   try {
     const filter: Record<string, any> = {};
@@ -45,7 +65,7 @@ const fetchLikes = async () => {
     }
 
     const likes = await getLikes({
-      fields: ["id", "user_created.id"], // 确保获取 user_created.id
+      fields: ["id", "user_created.id"],
       filter,
     });
 
@@ -53,11 +73,9 @@ const fetchLikes = async () => {
     const currentUserId = useAuth().user.value?.id;
     const userLike = likes.find((like) => like.user_created?.id === currentUserId);
 
-    // 重置所有状态
     isLiked.value = false;
     currentLikeId.value = null;
 
-    // 如果找到用户的点赞记录，更新状态
     if (userLike) {
       isLiked.value = true;
       currentLikeId.value = userLike.id;
@@ -67,24 +85,24 @@ const fetchLikes = async () => {
   }
 };
 
-// 处理点赞/取消点赞
 const handleLikeAction = async () => {
   if (!isAuthenticated.value || isProcessing.value) return;
 
   try {
     isProcessing.value = true;
+
     if (isLiked.value && currentLikeId.value) {
       await deleteLike(currentLikeId.value);
-      isLiked.value = false;
       likesCount.value--;
+      isLiked.value = false;
       currentLikeId.value = null;
     } else {
       const newLike = await createLike({
         comment_id: props.commentId,
         content_id: props.contentId,
       });
-      isLiked.value = true;
       likesCount.value++;
+      isLiked.value = true;
       currentLikeId.value = newLike.id;
     }
   } catch (error) {
@@ -94,7 +112,6 @@ const handleLikeAction = async () => {
   }
 };
 
-// 使用防抖包装处理函数
 const handleLike = useDebounceFn(handleLikeAction, 500);
 
 onMounted(async () => {
@@ -114,12 +131,30 @@ onMounted(async () => {
 
 watch(isAuthenticated, (newValue) => {
   if (!newValue) {
-    // 用户退出时重置状态
     isLiked.value = false;
     currentLikeId.value = null;
   } else {
-    // 用户登录时重新获取状态
     fetchLikes();
   }
 });
 </script>
+
+<style scoped>
+.number-column {
+  display: inline-block;
+  height: 1.25em;
+  overflow: hidden;
+  position: relative;
+}
+
+.number-scroll {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.number-cell {
+  height: 1.25em;
+  width: 0.6em;
+  text-align: center;
+  line-height: 1.25em;
+}
+</style>

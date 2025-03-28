@@ -21,32 +21,44 @@
       <div class="grid grid-cols-2 gap-4 mb-8">
         <div class="p-4 rounded-lg bg-neutral-800">
           <div class="text-2xl font-bold text-center nums tabular-nums">
-            <div class="number-wrapper">
-              <span
-                :class="{
-                  'number-animate-up': shouldAnimateComments === 'up',
-                  'number-animate-down': shouldAnimateComments === 'down',
-                }"
-                :data-old="prevCommentsCount"
-                :data-new="commentsCount"
-                >{{ commentsCount }}</span
-              >
+            <div class="flex justify-center">
+              <div
+                v-for="(digit, index) in displayCommentsDigits"
+                :key="index"
+                class="number-column">
+                <div
+                  class="number-scroll"
+                  :style="{ transform: `translateY(${digit * -10}%)` }">
+                  <div
+                    v-for="n in 10"
+                    :key="n"
+                    class="number-cell">
+                    {{ n - 1 }}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="text-neutral-500 text-center">评论数</div>
         </div>
         <div class="p-4 rounded-lg bg-neutral-800">
           <div class="text-2xl font-bold text-center nums tabular-nums">
-            <div class="number-wrapper">
-              <span
-                :class="{
-                  'number-animate-up': shouldAnimateLikes === 'up',
-                  'number-animate-down': shouldAnimateLikes === 'down',
-                }"
-                :data-old="prevLikesCount"
-                :data-new="likesCount"
-                >{{ likesCount }}</span
-              >
+            <div class="flex justify-center">
+              <div
+                v-for="(digit, index) in displayLikesDigits"
+                :key="index"
+                class="number-column">
+                <div
+                  class="number-scroll"
+                  :style="{ transform: `translateY(${digit * -10}%)` }">
+                  <div
+                    v-for="n in 10"
+                    :key="n"
+                    class="number-cell">
+                    {{ n - 1 }}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div class="text-neutral-500 text-center">点赞数</div>
@@ -77,36 +89,23 @@ const toast = useToast();
 
 const isLoading = ref(false);
 const isStatsLoading = ref(false);
-const shouldAnimateComments = ref<"up" | "down" | false>(false);
-const shouldAnimateLikes = ref<"up" | "down" | false>(false);
 const isFirstLoad = ref(true);
-const prevCommentsCount = ref(0);
-const prevLikesCount = ref(0);
+
+// 将数字转换为数字数组
+const displayCommentsDigits = computed(() => {
+  return String(commentsCount.value).padStart(1, "0").split("").map(Number);
+});
+
+const displayLikesDigits = computed(() => {
+  return String(likesCount.value).padStart(1, "0").split("").map(Number);
+});
 
 const loadUserStats = async () => {
   if (!user.value?.id || isStatsLoading.value) return;
 
   try {
     isStatsLoading.value = true;
-    prevCommentsCount.value = commentsCount.value;
-    prevLikesCount.value = likesCount.value;
-
     await fetchStats(user.value.id);
-
-    if (!isFirstLoad.value) {
-      if (prevCommentsCount.value !== commentsCount.value) {
-        shouldAnimateComments.value = commentsCount.value > prevCommentsCount.value ? "up" : "down";
-        setTimeout(() => {
-          shouldAnimateComments.value = false;
-        }, 500);
-      }
-      if (prevLikesCount.value !== likesCount.value) {
-        shouldAnimateLikes.value = likesCount.value > prevLikesCount.value ? "up" : "down";
-        setTimeout(() => {
-          shouldAnimateLikes.value = false;
-        }, 500);
-      }
-    }
   } catch (error) {
     toast.add({
       title: "获取数据失败",
@@ -137,16 +136,6 @@ const handleLogout = async () => {
   }
 };
 
-// watch(
-//   () => user.value?.id,
-//   (newId) => {
-//     if (newId) {
-//       isFirstLoad.value = true;
-//       loadUserStats();
-//     }
-//   }
-// );
-
 onActivated(() => {
   loadUserStats();
 });
@@ -157,89 +146,21 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.number-wrapper {
-  position: relative;
+.number-column {
+  display: inline-block;
   height: 2rem;
   overflow: hidden;
-  display: inline-block;
-  min-width: 1.5rem;
-}
-
-.number-animate-up,
-.number-animate-down {
   position: relative;
-  display: inline-block;
-  visibility: hidden;
 }
 
-.number-animate-up::before,
-.number-animate-down::before,
-.number-animate-up::after,
-.number-animate-down::after {
-  visibility: visible;
-  position: absolute;
-  left: 0;
-  right: 0;
+.number-scroll {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.number-cell {
+  height: 2rem;
+  width: 1rem;
   text-align: center;
-}
-
-.number-animate-up::before {
-  content: attr(data-old);
-  transform-origin: 50% 100%;
-  animation: moveUpOut 0.3s ease-in-out forwards;
-}
-
-.number-animate-up::after {
-  content: attr(data-new);
-  transform-origin: 50% 0%;
-  animation: moveUpIn 0.3s ease-in-out forwards;
-}
-
-.number-animate-down::before {
-  content: attr(data-old);
-  transform-origin: 50% 0%;
-  animation: moveDownOut 0.3s ease-in-out forwards;
-}
-
-.number-animate-down::after {
-  content: attr(data-new);
-  transform-origin: 50% 100%;
-  animation: moveDownIn 0.3s ease-in-out forwards;
-}
-
-@keyframes moveUpOut {
-  0% {
-    transform: translateY(0) rotateX(0);
-  }
-  100% {
-    transform: translateY(-50%) rotateX(-90deg);
-  }
-}
-
-@keyframes moveUpIn {
-  0% {
-    transform: translateY(50%) rotateX(90deg);
-  }
-  100% {
-    transform: translateY(0) rotateX(0);
-  }
-}
-
-@keyframes moveDownOut {
-  0% {
-    transform: translateY(0) rotateX(0);
-  }
-  100% {
-    transform: translateY(50%) rotateX(90deg);
-  }
-}
-
-@keyframes moveDownIn {
-  0% {
-    transform: translateY(-50%) rotateX(-90deg);
-  }
-  100% {
-    transform: translateY(0) rotateX(0);
-  }
+  line-height: 2rem;
 }
 </style>

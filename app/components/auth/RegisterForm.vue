@@ -7,8 +7,7 @@
         v-model="email"
         type="email"
         id="email"
-        variant="outline"
-        color="neutral"
+        variant="soft"
         size="xl"
         icon="hugeicons:at"
         class="w-full"
@@ -22,8 +21,7 @@
         v-model="firstName"
         type="text"
         id="firstName"
-        variant="outline"
-        color="neutral"
+        variant="soft"
         size="xl"
         icon="hugeicons:user-square"
         class="w-full"
@@ -80,10 +78,10 @@
 <script setup lang="ts">
 import { validateEmail, validateUsername, validatePassword } from "~/utils/validation";
 import { AUTH_ERROR_MESSAGES } from "~/types/auth";
+import { safeBack } from "~/router.options";
 
 const { $user, $authClient } = useNuxtApp();
 const { register } = useAuth();
-const navigateTo = useNuxtApp().$router;
 const toast = useToast();
 
 const firstName = ref("");
@@ -196,7 +194,7 @@ const handleSubmit = async () => {
       color: "success",
     });
 
-    navigateTo.back();
+    await safeBack();
   } catch (error: any) {
     toast.add({
       title: "注册提示",

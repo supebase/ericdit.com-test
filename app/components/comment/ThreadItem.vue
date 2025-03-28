@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex flex-col">
+    <div class="-space-y-2">
       <div class="flex">
         <div class="mr-3">
           <UChip
@@ -40,7 +40,7 @@
         {{ comment.comment }}
       </div>
 
-      <div class="ml-10 mt-2 flex justify-between items-center space-y-4">
+      <div class="ml-10 mt-4 flex justify-between items-center space-y-4">
         <button
           @click="toggleReplyInput"
           class="text-sm text-neutral-500 nums tabular-nums cursor-pointer">

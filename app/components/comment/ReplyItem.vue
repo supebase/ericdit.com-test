@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col">
+  <div class="-space-y-2">
     <div class="flex">
       <div class="mr-3">
         <UChip
