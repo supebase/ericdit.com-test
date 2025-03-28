@@ -1,6 +1,6 @@
 <template>
   <NuxtLink
-    :to="`/article/${contentId}`"
+    :to="{ name: 'article-id', params: { id: contentId } }"
     class="flex justify-end items-center space-x-2">
     <UIcon
       :name="

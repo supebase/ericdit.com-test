@@ -1,6 +1,5 @@
 <template>
-  <div
-    class="ring-2 ring-neutral-800 bg-neutral-950/60 rounded-lg p-1.5 m-1">
+  <div class="ring-2 ring-neutral-800 bg-neutral-950/60 rounded-lg p-1.5 m-1">
     <UTextarea
       ref="commentInput"
       v-model="content"
@@ -11,15 +10,14 @@
       :padded="false"
       size="lg"
       class="text-neutral-700 dark:text-neutral-300 w-full"
+      :class="isAuthenticated? '' : 'login'"
       :maxlength="COMMENT_MAX_LENGTH"
       @input="validateInput"
       :disabled="!isAuthenticated || isSubmitting"
       :placeholder="isAuthenticated ? placeholder : '请先登录后再发表评论'" />
-    <div class="flex justify-between items-center px-3">
+    <div class="flex justify-between items-center px-3" v-if="isAuthenticated">
       <div class="flex items-center space-x-4">
-        <ReactionsEmojiSelector
-          @emoji="insertEmoji"
-          v-if="isAuthenticated" />
+        <ReactionsEmojiSelector @emoji="insertEmoji" />
         <UBadge
           label="禁止输入特殊字符"
           color="error"

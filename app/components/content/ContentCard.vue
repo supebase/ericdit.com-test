@@ -1,6 +1,6 @@
 <template>
   <article class="py-4 select-none">
-    <NuxtLink :to="`/article/${content.id}`">
+    <NuxtLink :to="{ name: 'article-id', params: { id: content.id } }">
       <!-- 非单图模式的标题显示 -->
       <div
         v-if="displayType !== 'single'"

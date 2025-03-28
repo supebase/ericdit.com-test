@@ -13,7 +13,7 @@
           <div
             v-else
             key="icon"
-            @click="$router.push('/')"
+            @click="$router.back()"
             class="cursor-pointer">
             <SharedNavigationBack />
           </div>

@@ -10,7 +10,7 @@ export default defineNuxtConfig({
   },
 
   experimental: {
-    viewTransition: true,
+    //viewTransition: true,
     componentIslands: true,
   },
 
@@ -64,12 +64,6 @@ export default defineNuxtConfig({
   build: {
     transpile: ["vue-router"],
     analyze: false,
-  },
-
-  router: {
-    options: {
-      scrollBehaviorType: "smooth",
-    },
   },
 
   mdc: {

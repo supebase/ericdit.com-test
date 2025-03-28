@@ -58,6 +58,7 @@ import { validateEmail } from "~/utils/validation";
 import { AUTH_ERROR_MESSAGES } from "~/types/auth";
 
 const { login, updateUserLocation } = useAuth();
+const navigateTo = useNuxtApp().$router;
 const toast = useToast();
 
 const email = ref("");
@@ -89,7 +90,7 @@ const handleSubmit = async () => {
   try {
     isSubmitting.value = true;
     await login(email.value, password.value);
-    navigateTo("/");
+    navigateTo.back();
 
     updateUserLocation();
   } catch (error: any) {

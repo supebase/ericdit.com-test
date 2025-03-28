@@ -1,19 +1,20 @@
 <template>
   <div class="select-none pb-8">
-    <USeparator
-      v-if="allowComments"
-      :label="`有 ${totalComments} 条评论，快来加入讨论！`"
-      class="nums tabular-nums my-6" />
+    <USeparator v-if="allowComments">
+      <span class="text-neutral-600 text-sm nums tabular-nums my-6">
+        有 {{ totalComments }} 条评论，快来加入讨论！
+      </span>
+    </USeparator>
 
     <div v-if="allowComments">
       <div
-        class="transform transition-all duration-700 ease-in-out"
+        class="transform transition-all duration-500 ease-in-out"
         :class="
           showMainCommentForm
-            ? 'translate-y-0 opacity-100 max-h-[500px]'
-            : '-translate-y-4 opacity-0 max-h-0 overflow-hidden'
+            ? 'scale-100 opacity-100 max-h-[110px]'
+            : 'scale-0 opacity-0 max-h-0 overflow-hidden'
         ">
-        <div class="animate-in slide-in-from-left duration-700">
+        <div class="animate-in slide-in-from-left duration-500">
           <CommentEditor
             :is-submitting="isSubmitting"
             :placeholder="randomPlaceholder"
@@ -67,6 +68,7 @@
 </template>
 
 <script setup lang="ts">
+import { USeparator } from "#components";
 import { AUTH_ERROR_MESSAGES } from "~/types/auth";
 
 interface ReplyData {

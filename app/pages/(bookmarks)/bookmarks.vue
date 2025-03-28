@@ -30,7 +30,7 @@
         v-for="bookmark in bookmarks"
         :key="bookmark.id">
         <NuxtLink
-          :to="`/article/${bookmark.content_id.id}`"
+          :to="{ name: 'article-id', params: { id: bookmark.content_id.id } }"
           class="block mb-2">
           <h2 class="text-base font-medium">
             {{ bookmark.content_id.title }}
@@ -38,7 +38,9 @@
         </NuxtLink>
 
         <div class="flex items-center justify-between">
-          <div class="text-sm text-neutral-500">{{ useDateFormatter(bookmark.date_created) }}收藏</div>
+          <div class="text-sm text-neutral-500">
+            {{ useDateFormatter(bookmark.date_created) }}收藏
+          </div>
           <UButton
             icon="hugeicons:bookmark-minus-02"
             color="error"

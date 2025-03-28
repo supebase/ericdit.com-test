@@ -58,7 +58,7 @@
       class="transform transition-all duration-500 ease-in-out"
       :class="
         isReplying
-          ? 'scale-100 opacity-100 max-h-[500px] overflow-hidden'
+          ? 'scale-100 opacity-100 max-h-[110px]'
           : 'scale-0 opacity-0 max-h-0 overflow-hidden'
       ">
       <div class="ml-10">

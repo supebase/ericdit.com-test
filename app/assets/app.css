@@ -26,7 +26,6 @@
 html {
   overflow-y: scroll;
   font-family: "Ubuntu";
-  scroll-behavior: smooth !important;
 }
 
 ::-webkit-scrollbar {
@@ -169,6 +168,15 @@ html {
 
 textarea {
   resize: none;
+}
+
+.login textarea::placeholder {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
 }
 
 hr {

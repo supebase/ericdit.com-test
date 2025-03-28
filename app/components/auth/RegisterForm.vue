@@ -83,6 +83,7 @@ import { AUTH_ERROR_MESSAGES } from "~/types/auth";
 
 const { $user, $authClient } = useNuxtApp();
 const { register } = useAuth();
+const navigateTo = useNuxtApp().$router;
 const toast = useToast();
 
 const firstName = ref("");
@@ -195,7 +196,7 @@ const handleSubmit = async () => {
       color: "success",
     });
 
-    navigateTo("/");
+    navigateTo.back();
   } catch (error: any) {
     toast.add({
       title: "注册提示",
