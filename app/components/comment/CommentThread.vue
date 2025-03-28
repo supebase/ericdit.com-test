@@ -68,7 +68,6 @@
 </template>
 
 <script setup lang="ts">
-import { USeparator } from "#components";
 import { AUTH_ERROR_MESSAGES } from "~/types/auth";
 
 interface ReplyData {
