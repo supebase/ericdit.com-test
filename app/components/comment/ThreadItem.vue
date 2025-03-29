@@ -17,13 +17,15 @@
 
         <div class="flex-1">
           <div class="flex justify-between items-center">
-            <div class="flex items-center gap-3 nums tabular-nums">
-              <div class="font-medium">{{ comment.user_created.first_name }}</div>
-              <div class="text-sm text-neutral-500">
+            <div class="flex items-center gap-3 text-sm nums tabular-nums">
+              <div class="text-base font-medium">{{ comment.user_created.first_name }}</div>
+              <div class="text-neutral-500">
                 {{ useDateFormatter(comment.date_created) }}
               </div>
-              <div class="text-sm text-neutral-500">&bull;</div>
-              <div class="text-sm text-neutral-500">
+              <UIcon
+                name="hugeicons:arrow-right-01"
+                class="size-3 text-neutral-500" />
+              <div class="text-neutral-500">
                 {{ comment.user_created.location }}
               </div>
             </div>

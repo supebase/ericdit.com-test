@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@directus/sdk": "^19.1.0",
-    "@nuxt/ui": "^3.0.1",
+    "@nuxt/ui": "^3.0.2",
     "@vueuse/nuxt": "^13.0.0",
     "nuxt": "^3.16.1",
     "nuxt-emoji-picker": "^1.1.0",

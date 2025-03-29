@@ -13,7 +13,7 @@
           <div
             v-else
             key="icon"
-            @click="$router.back()"
+            @click="safeBack()"
             class="cursor-pointer">
             <SharedNavigationBack />
           </div>
@@ -41,5 +41,6 @@
 </template>
 
 <script setup>
+import { safeBack } from "~/router.options";
 const { isAuthenticated } = useAuth();
 </script>

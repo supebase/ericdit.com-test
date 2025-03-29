@@ -115,21 +115,43 @@ watch(
   { immediate: true }
 );
 
-onMounted(() => {
+let unsubscribe: (() => void) | null = null;
+
+// 添加页面可见性变化处理
+const handleVisibilityChange = () => {
+  if (document.visibilityState === "visible") {
+    fetchBookmarks();
+  }
+};
+
+onMounted(async () => {
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+
   if (user.value?.id) {
-    subscribeBookmarks(
-      {
-        fields: ["id", "content_id.*", "date_created"],
-        filter: {
-          user_created: { _eq: user.value.id },
+    try {
+      unsubscribe = await subscribeBookmarks(
+        {
+          fields: ["id", "content_id.*", "date_created"],
+          filter: {
+            user_created: { _eq: user.value.id },
+          },
         },
-      },
-      async (event) => {
-        if (["create", "delete"].includes(event.event)) {
-          await fetchBookmarks();
+        async (event) => {
+          if (["create", "delete"].includes(event.event)) {
+            await fetchBookmarks();
+          }
         }
-      }
-    );
+      );
+    } catch (error) {
+      console.error("Failed to subscribe to bookmarks:", error);
+    }
+  }
+});
+
+onUnmounted(() => {
+  document.removeEventListener("visibilitychange", handleVisibilityChange);
+  if (unsubscribe) {
+    unsubscribe();
   }
 });
 </script>

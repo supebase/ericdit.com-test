@@ -64,20 +64,39 @@ export const useBookmarks = () => {
    * @param callback - 数据变化时的回调函数
    * @returns 取消订阅的清理函数
    */
+  // ... 其他代码保持不变 ...
+
   const subscribeBookmarks = async (
     query: Bookmarks.QueryOptions,
     callback: (item: any) => void
   ): Promise<() => void> => {
-    const { subscription } = await $realtimeClient.subscribe("bookmarks", { query });
+    let subscription: any;
 
-    for await (const item of subscription) {
-      callback(item);
-    }
+    const subscribe = async () => {
+      try {
+        const result = await $realtimeClient.subscribe("bookmarks", { query });
+        subscription = result.subscription;
+
+        for await (const item of subscription) {
+          callback(item);
+        }
+      } catch (error) {
+        console.error("Subscription error:", error);
+        // 重试订阅
+        setTimeout(subscribe, 3000);
+      }
+    };
+
+    await subscribe();
 
     return () => {
-      subscription.return();
+      if (subscription) {
+        subscription.return();
+      }
     };
   };
+
+  // ... 其他代码保持不变 ...
 
   return {
     getBookmarks,

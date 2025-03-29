@@ -7,10 +7,12 @@
         <UAvatar
           :src="useAssets(content.user_created.avatar) || undefined"
           size="sm" />
-        <div class="text-neutral-50">
+        <div class="text-base text-neutral-50 font-medium">
           {{ content.user_created.first_name }}
         </div>
-        <div>&bull;</div>
+        <UIcon
+          name="hugeicons:arrow-right-01"
+          class="size-3 text-neutral-500" />
         <div>
           {{ useDateFormatter(content.date_created) }}
         </div>

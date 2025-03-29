@@ -138,10 +138,9 @@ export namespace Bookmarks {
     id: string; // 书签ID
     user_created: User.Profile; // 创建书签的用户
     date_created: string; // 创建时间
-    content_id: {
+    content_id: any | {
       id: string;
       title: string;
-      [key: string]: any;
     },
     isDeleting?: boolean;
   }

@@ -45,10 +45,21 @@ const fetchBookmarksCount = async () => {
   }
 };
 
+let unsubscribe: (() => void) | null = null;
+
+// 添加页面可见性变化处理
+const handleVisibilityChange = () => {
+  if (document.visibilityState === "visible") {
+    fetchBookmarksCount();
+  }
+};
+
 onMounted(async () => {
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+
   await fetchBookmarksCount();
 
-  subscribeBookmarks(
+  unsubscribe = await subscribeBookmarks(
     {
       fields: ["id"],
       filter: {
@@ -61,5 +72,12 @@ onMounted(async () => {
       }
     }
   );
+});
+
+onUnmounted(() => {
+  document.removeEventListener("visibilitychange", handleVisibilityChange);
+  if (unsubscribe) {
+    unsubscribe();
+  }
 });
 </script>
