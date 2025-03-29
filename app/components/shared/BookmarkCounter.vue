@@ -1,7 +1,7 @@
 <template>
-  <div v-if="loading && bookmarksCount === null">
+  <div v-if="loading && bookmarksCount == null">
     <UIcon
-      name="svg-spinners:ring-resize"
+      name="svg-spinners:3-dots-scale"
       class="size-6 text-neutral-500" />
   </div>
   <div

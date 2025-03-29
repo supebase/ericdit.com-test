@@ -2,7 +2,7 @@
   <div class="select-none">
     <div class="flex items-center my-6">
       <USeparator>
-        <div class="text-neutral-600 text-base nums tabular-nums">我的收藏</div>
+        <div class="text-neutral-600 text-sm nums tabular-nums">我的收藏</div>
       </USeparator>
     </div>
 
@@ -32,21 +32,21 @@
         <NuxtLink
           :to="{ name: 'article-id', params: { id: bookmark.content_id.id } }"
           class="block mb-2">
-          <h2 class="text-base font-medium">
+          <h2 class="text-sm font-medium">
             {{ bookmark.content_id.title }}
           </h2>
         </NuxtLink>
 
         <div class="flex items-center justify-between">
-          <div class="text-sm text-neutral-500">
+          <div class="text-xs text-neutral-500">
             {{ useDateFormatter(bookmark.date_created) }}收藏
           </div>
-          <UButton
+          <UButton :ui="{ leadingIcon: 'size-4' }"
             icon="hugeicons:bookmark-minus-02"
             color="error"
             variant="link"
             size="xs"
-            class="cursor-pointer size-5"
+            class="cursor-pointer size-4"
             :loading="bookmark.isDeleting"
             :disabled="bookmark.isDeleting"
             @click="removeBookmark(bookmark)" />

@@ -7,6 +7,7 @@
             :src="useAssets(user?.avatar || '')"
             :alt="!user?.avatar ? user?.first_name : undefined"
             size="lg"
+            loading="lazy"
             class="uppercase" />
         </NuxtLink>
       </div>

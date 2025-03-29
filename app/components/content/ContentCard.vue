@@ -68,7 +68,8 @@
       <div class="flex items-center space-x-2">
         <UAvatar
           :src="useAssets(content.user_created.avatar) || undefined"
-          size="xs" />
+          size="xs"
+          loading="lazy" />
         <div class="text-sm text-neutral-400 nums tabular-nums">
           {{ useDateFormatter(content.date_created) }}
         </div>

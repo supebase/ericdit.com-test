@@ -1,14 +1,16 @@
 <template>
-  <div class="space-y-6 my-6 ml-5">
+  <div>
     <div
       v-if="isLoading && !replies.length"
-      class="text-center my-8 text-neutral-500">
+      class="text-center text-neutral-500">
       <UIcon
-        name="svg-spinners:ring-resize"
-        class="size-6 text-neutral-500" />
+        name="svg-spinners:3-dots-bounce"
+        class="size-4 text-neutral-500" />
     </div>
 
-    <div class="space-y-6 ml-5" v-else>
+    <div
+      class="space-y-6"
+      v-else>
       <CommentReplyItem
         v-for="reply in displayReplies"
         :key="reply.id"
@@ -16,7 +18,7 @@
 
       <div
         v-if="replies.length > 2"
-        class="text-sm">
+        class="text-sm ml-10">
         <button
           class="text-neutral-500 nums tabular-nums cursor-pointer"
           @click="toggleExpand">

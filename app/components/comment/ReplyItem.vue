@@ -10,6 +10,7 @@
             :src="useAssets(reply.user_created.avatar || '')"
             :alt="!reply.user_created.avatar ? reply.user_created.first_name : undefined"
             size="sm"
+            loading="lazy"
             class="uppercase" />
         </UChip>
       </div>

@@ -25,6 +25,11 @@ export default defineAppConfig({
         },
       ],
     },
+    card: {
+      slots: {
+        root: "rounded-[calc(var(--ui-radius)*1)]", // 卡片圆角大小
+      },
+    }
   },
 
   // 消息提示配置

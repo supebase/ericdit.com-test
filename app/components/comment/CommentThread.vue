@@ -1,5 +1,5 @@
 <template>
-  <div class="select-none pb-8">
+  <div class="select-none pb-6">
     <USeparator v-if="allowComments">
       <div class="text-neutral-600 text-sm nums tabular-nums my-6">
         <span v-if="totalComments"> 有 {{ totalComments }} 条评论，快来加入讨论！ </span>
@@ -46,7 +46,7 @@
       v-else-if="isLoading && !comments"
       class="text-center my-8 text-neutral-500">
       <UIcon
-        name="svg-spinners:ring-resize"
+        name="svg-spinners:3-dots-bounce"
         class="size-6 text-neutral-500" />
     </div>
 
